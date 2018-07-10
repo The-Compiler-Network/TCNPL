@@ -1,3 +1,12 @@
-{1, 1.1}
-"YaY, Mi\"au ^~^"
+{12345789, 123456789.123456789}
+"aA \" \\ ^~^"
 'a' '1' '-' '\"' '\\' ''
+true false
+{1,2,3,4}
+{}
+{1}
+{1,'2',"lol"}
+name
+repeat(name=vartovar2atrate) {}
+repeat while () {}
+repeat {} while ()
