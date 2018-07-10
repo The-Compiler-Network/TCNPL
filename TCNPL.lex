@@ -2,21 +2,39 @@ LETTER [a-zA-Z]
 DIGIT [0-9]
 SYMBOL [^0-9a-zA-Z]
 ASCII \\.|[^"\\]
-id {LETTER}[{LETTER}|{DIGIT}]*
+id {LETTER}(_|{LETTER}|{DIGIT})*
 
-bool true|false
+bool "true"|"false"
 int {DIGIT}+
 real {DIGIT}+"."{DIGIT}*
 char "'"{ASCII}?"'"
 string \"{ASCII}*\"
 literal {bool}|{int}|{real}|{char}|{string}
-array "{"{literal}(,{literal})*"}"
+array "{"{literal}(","{literal})*"}"
+
+repeat "repeat"
+while "while"
+  /*to "to"
+  at "at"
+
+  if "if"
+  elif "elif"
+  else "else"*/
+
+counterLoopControl "("{id}"="({id}|{int})"to"({id}|{int})("at"({id}|{int}))?")"
 
 body "{""}"
 
 %%
 
-{id}      { printf("<id: %s>", yytext); }
+    /* Reserved words: */
+  /* Selection and iteration {id}=[{id}|{int}]to[{id}|{int}][at[{id}|{int}]]? */
+
+
+{repeat}{counterLoopControl}{body} { printf("<repeat counter: %s>", yytext); }
+{repeat}{while}"("")"{body} { printf("<repeat while: %s>", yytext); }
+{repeat}{body}{while}"("")" { printf("<while repeat: %s>", yytext); }
+  /*"repeat("{id}"="({id}|{int}){to}({id}|{int})")"{body}    { printf("<repeat: %s>", yytext); }*/
 
   /* Literals: */
 {bool}    { printf("<bool: %s>", yytext); }
@@ -26,20 +44,10 @@ body "{""}"
 {string}  { printf("<string: %s>", yytext); }
 {array}   { printf("<array: %s>", yytext); }
 
-    /* Reserved words: */
-  /* Selection and iteration */
-repeat({id}=[{id}|{int}]to[{id}|{int}][at[{id}|{int}]]?){body}    { printf("<repeat>"); }
-to        { printf("to"); }
-at        { printf("at"); }
-while     { printf("while"); }
-if        { printf("if"); }
-elif      { printf("elif"); }
-else      { printf("else"); }
 
+{body}    { printf("<body: %s>", yytext); }
 
-as
-is
-bool
+{id}      { printf("<id: %s>", yytext); }
 
 %%
 
