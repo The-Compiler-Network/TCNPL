@@ -1,7 +1,15 @@
 from enum import Enum
 
+
 class TokenCategory(Enum):
-  ASCII, id, typeBool, typeInt, typeReal, typeChar, typeString, typeArray, asCast, isType, of, bool, int, real, char, string, literal, array, repeat, whileLoop, to, at, ifSel, elifSel, elseSel, opParen, clParen, function, returnFun, entryPoint, opBraces, clBraces, opBrackets, clBrackets, lineIn, textOut, format, unary, exp, mult, aditive, bitShift, relational, logical, bitwiseAnd, bitwiseOr, logicAnd, logicOr, atribution, comma = list(range(50))
+  ASCII, id, typeBool, typeInt, typeReal, typeChar, typeString, \
+  typeArray, asCast, isType, of, bool, int, real, char, string, \
+  literal, array, repeat, whileLoop, to, at, ifSel, elifSel, \
+  elseSel, opParen, clParen, function, returnFun, entryPoint, \
+  opBraces, clBraces, opBrackets, clBrackets, lineIn, textOut, \
+  format, unary, exp, mult, additive, bitShift, relational, \
+  eqOrDiff, bitwiseAnd, bitwiseOr, logicAnd, logicOr, \
+  attrib, comma = list(range(50))
   # id = [[:alpha:]](_|[[:alnum:]])*
   # typeBool = "bool"
   # typeInt = "int"
@@ -44,10 +52,10 @@ class TokenCategory(Enum):
   # aditive = "+"|"-"
   # bitShift = "<<"|">>"
   # relational = "<"|"<="|">="|">"
-  # logical = "=="|"!="
+  # eqOrDiff = "=="|"!="
   # bitwiseAnd = "&"
   # bitwiseOr = "|"
   # logicAnd = "&&"
   # logicOr = "||"
-  # atribution = "="
+  # attrib = "="
   # comma = ","
