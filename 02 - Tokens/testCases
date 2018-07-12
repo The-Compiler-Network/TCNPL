@@ -15,3 +15,5 @@ name_117
 repeat(na_me=var to 2){}
 repeat while(){}
 repeat{}while()
+
+if (k==2) {}
