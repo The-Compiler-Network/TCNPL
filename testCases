@@ -12,6 +12,6 @@ true false
 name_117
 
 {}
-repeat(na_me=varto2){}
-repeatwhile(){}
+repeat(na_me=var to 2){}
+repeat while(){}
 repeat{}while()

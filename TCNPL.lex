@@ -57,15 +57,15 @@ textOut "textOut"
 format "format"
 
 /* Operators */
-unary "-"
+unary "-"|"!"|"~"
 exp "**"|"*/"
 mult "*"|"/"|"%"
 aditive "+"|"-"
 bitShift "<<"|">>"
-relational "<"|" <="|">="|">"
-logical "=="|"!="
-bitwiseAnd "&"
-bitwiseOr "|"
+relational "<"|"<="|">="|">"
+logic "=="|"!="
+bitAnd "&"
+bitOr "|"
 logicAnd "&&"
 logicOr "||"
 atribution "="
@@ -97,29 +97,29 @@ comma ","
 {if} { printf(" <if: %s> ", yytext); }
 {elif} { printf(" <elif: %s> ", yytext); }
 {else} { printf(" <else: %s> ", yytext); }
-{openParenthesis} { printf(" <openParenthesis: %s> ", yytext); }
-{closeParenthesis} { printf(" <closeParenthesis: %s> ", yytext); }
+{opParen} { printf(" <opParen: %s> ", yytext); }
+{clParen} { printf(" <clParen: %s> ", yytext); }
 {function} { printf(" <function: %s> ", yytext); }
 {return} { printf(" <return: %s> ", yytext); }
-{isEntryPoint} { printf(" <isEntryPoint: %s> ", yytext); }
-{openBraces} { printf(" <openBraces: %s> ", yytext); }
-{closeBraces} { printf(" <closeBraces: %s> ", yytext); }
-{openBrackets} { printf(" <openBrackets: %s> ", yytext); }
-{closeBrackets} { printf(" <closeBrackets: %s> ", yytext); }
+{entryPoint} { printf(" <isEntryPoint: %s> ", yytext); }
+{opBraces} { printf(" <opBraces: %s> ", yytext); }
+{clBraces} { printf(" <clBraces: %s> ", yytext); }
+{opBrackets} { printf(" <opBrackets: %s> ", yytext); }
+{clBrackets} { printf(" <clBrackets: %s> ", yytext); }
 {lineIn} { printf(" <lineIn: %s> ", yytext); }
 {textOut} { printf(" <textOut: %s> ", yytext); }
 {format} { printf(" <format: %s> ", yytext); }
 {unary} { printf(" <unary: %s> ", yytext); }
-{exponential} { printf(" <exponential: %s> ", yytext); }
-{multiplicative} { printf(" <multiplicative: %s> ", yytext); }
+{exp} { printf(" <exponential: %s> ", yytext); }
+{mult} { printf(" <multiplicative: %s> ", yytext); }
 {aditive} { printf(" <aditive: %s> ", yytext); }
-{bitwiseShift} { printf(" <bitwiseShift: %s> ", yytext); }
+{bitShift} { printf(" <bitShift: %s> ", yytext); }
 {relational} { printf(" <relational: %s> ", yytext); }
-{logical} { printf(" <logical: %s> ", yytext); }
-{bitwiseAnd} { printf(" <bitwiseAnd: %s> ", yytext); }
-{bitwiseOr} { printf(" <bitwiseOr: %s> ", yytext); }
-{logicalAnd} { printf(" <logicalAnd: %s> ", yytext); }
-{logicalOr} { printf(" <logicalOr: %s> ", yytext); }
+{logic} { printf(" <logic: %s> ", yytext); }
+{bitAnd} { printf(" <bitAnd: %s> ", yytext); }
+{bitOr} { printf(" <bitOr: %s> ", yytext); }
+{logicAnd} { printf(" <logicAnd: %s> ", yytext); }
+{logicOr} { printf(" <logicOr: %s> ", yytext); }
 {atribution} { printf(" <atribution: %s> ", yytext); }
 {comma} { printf(" <comma: %s> ", yytext); }
   /* {end} { printf(" <end: \\n> \n"); } */
