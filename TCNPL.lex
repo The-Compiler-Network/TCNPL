@@ -1,4 +1,5 @@
 ASCII \\.|[^"\\]
+id [[:alpha:]](_|[[:alnum:]])*
 
 /* Type */
 typeBool "bool"
@@ -33,22 +34,22 @@ if "if"
 elif "elif"
 else "else"
 
-/* Function parameters */
-openParenthesis "("
-closeParenthesis ")"
+/* Function parameters / Expressions */
+opParen "("
+clParen ")"
 
 /* Function */
 function "function"
 return "return"
-isEntryPoint "@isEntryPoint"
+entryPoint "@isEntryPoint"
 
 /* Code block */
-openBraces "{"
-closeBraces "}"
+opBraces "{"
+clBraces "}"
 
 /* Array access */
-openBrackets "["
-closeBrackets "]"
+opBrackets "["
+clBrackets "]"
 
 /* Input and Output */
 lineIn "lineIn"
@@ -57,20 +58,20 @@ format "format"
 
 /* Operators */
 unary "-"
-exponential "**"|"*/"
-multiplicative "*"|"/"|"%"
+exp "**"|"*/"
+mult "*"|"/"|"%"
 aditive "+"|"-"
-bitwiseShift "<<"|">>"
+bitShift "<<"|">>"
 relational "<"|" <="|">="|">"
 logical "=="|"!="
 bitwiseAnd "&"
 bitwiseOr "|"
-logicalAnd "&&"
-logicalOr "||"
+logicAnd "&&"
+logicOr "||"
 atribution "="
-comma ","
 
-id [[:alpha:]](_|[[:alnum:]])*
+/* Separators */
+comma ","
 
 %%
 
@@ -121,6 +122,7 @@ id [[:alpha:]](_|[[:alnum:]])*
 {logicalOr} { printf(" <logicalOr: %s> ", yytext); }
 {atribution} { printf(" <atribution: %s> ", yytext); }
 {comma} { printf(" <comma: %s> ", yytext); }
+  /* {end} { printf(" <end: \\n> \n"); } */
 {id} { printf(" <id: %s> ", yytext); }
 
 %%
