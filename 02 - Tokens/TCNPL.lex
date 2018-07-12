@@ -64,11 +64,11 @@ additive "+"|"-"
 bitShift "<<"|">>"
 relational "<"|"<="|">="|">"
 eqOrDiff "=="|"!="
-bitAnd "&"
-bitOr "|"
+bitwiseAnd "&"
+bitwiseOr "|"
 logicAnd "&&"
 logicOr "||"
-atribution "="
+attrib "="
 
 /* Separators */
 comma ","
@@ -116,11 +116,11 @@ comma ","
 {bitShift} { printf(" <bitShift: %s> ", yytext); }
 {relational} { printf(" <relational: %s> ", yytext); }
 {eqOrDiff} { printf(" <eqOrDiff: %s> ", yytext); }
-{bitAnd} { printf(" <bitAnd: %s> ", yytext); }
-{bitOr} { printf(" <bitOr: %s> ", yytext); }
+{bitwiseAnd} { printf(" <bitwiseAnd: %s> ", yytext); }
+{bitwiseOr} { printf(" <bitwiseOr: %s> ", yytext); }
 {logicAnd} { printf(" <logicAnd: %s> ", yytext); }
 {logicOr} { printf(" <logicOr: %s> ", yytext); }
-{atribution} { printf(" <atribution: %s> ", yytext); }
+{attrib} { printf(" <attrib: %s> ", yytext); }
 {comma} { printf(" <comma: %s> ", yytext); }
   /* {end} { printf(" <end: \\n> \n"); } */
 {id} { printf(" <id: %s> ", yytext); }
