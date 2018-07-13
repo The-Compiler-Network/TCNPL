@@ -3,7 +3,7 @@ from enum import Enum
 class TokenCategory(Enum):
   id, typeBool, typeInt, typeReal, typeChar, typeString, \
   typeArray, asCast, isType, of, bool, int, real, scynot, char, \
-  string, literal, array, repeat, whileLoop, to, at, ifSel, \
+  string, repeat, whileLoop, to, at, ifSel, \
   elifSel, elseSel, opParen, clParen, function, returnFun, \
   entryPoint, opBraces, clBraces, opBrackets, clBrackets, \
   unary,  exp, mult, additive, bitShift, relational, eqOrDiff,\
@@ -24,8 +24,6 @@ class TokenCategory(Enum):
 # scynot = {real}e{int}
 # char = "'"(\\.|[^"\\])?"'"
 # string = \"(\\.|[^"\\])*\"
-# literal = {bool}|{int}|{real}|{char}|{string}
-# array = "{"{literal}(","{literal})*"}"
 # repeat = "repeat"
 # whileLoop = "while"
 # to = "to"
