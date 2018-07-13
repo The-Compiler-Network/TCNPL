@@ -17,8 +17,8 @@ of "of"
 bool "true"|"false"
 int [[:digit:]]+
 real [[:digit:]]+"."[[:digit:]]*
-char "'"{\\.|[^"\\]}?"'"
-string \"{\\.|[^"\\]}*\"
+char "'"(\\.|[^"\\])?"'"
+string \"(\\.|[^"\\])*\"
 literal {bool}|{int}|{real}|{char}|{string}
 array "{"{literal}(","{literal})*"}"
 
@@ -49,11 +49,6 @@ clBraces "}"
 /* Array access */
 opBrackets "["
 clBrackets "]"
-
-/* Input and Output */
-lineIn "lineIn"
-textOut "textOut"
-format "format"
 
 /* Operators */
 unary "-"|"!"|"~"
@@ -105,9 +100,6 @@ comma ","
 {clBraces} { printf(" <clBraces: %s> ", yytext); }
 {opBrackets} { printf(" <opBrackets: %s> ", yytext); }
 {clBrackets} { printf(" <clBrackets: %s> ", yytext); }
-{lineIn} { printf(" <lineIn: %s> ", yytext); }
-{textOut} { printf(" <textOut: %s> ", yytext); }
-{format} { printf(" <format: %s> ", yytext); }
 {unary} { printf(" <unary: %s> ", yytext); }
 {exp} { printf(" <exp: %s> ", yytext); }
 {mult} { printf(" <mult: %s> ", yytext); }
