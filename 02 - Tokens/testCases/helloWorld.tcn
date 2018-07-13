@@ -1,0 +1,5 @@
+@isEntryPoint
+function helloWorld() is int {
+    textOut("Alô mundo!")
+    return 0
+}
