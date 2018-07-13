@@ -17,10 +17,9 @@ of "of"
 bool "true"|"false"
 int [[:digit:]]+
 real [[:digit:]]+"."[[:digit:]]*
+scynot {real}e{int}
 char "'"(\\.|[^"\\])?"'"
 string \"(\\.|[^"\\])*\"
-literal {bool}|{int}|{real}|{char}|{string}
-array "{"{literal}(","{literal})*"}"
 
 /* Iteration */
 repeat "repeat"
@@ -81,9 +80,9 @@ comma ","
 {bool} { printf(" <bool: %s> ", yytext); }
 {int} { printf(" <int: %s> ", yytext); }
 {real} { printf(" <real: %s> ", yytext); }
+{scynot} { printf(" <scynot: %s> ", yytext); }
 {char} { printf(" <char: %s> ", yytext); }
 {string} { printf(" <string: %s> ", yytext); }
-{array} { printf(" <array: %s> ", yytext); }
 {repeat} { printf(" <repeat: %s> ", yytext); }
 {whileLoop} { printf(" <whileLoop: %s> ", yytext); }
 {to} { printf(" <to: %s> ", yytext); }

@@ -1,14 +1,13 @@
 from enum import Enum
 
-
 class TokenCategory(Enum):
   id, typeBool, typeInt, typeReal, typeChar, typeString, \
-  typeArray, asCast, isType, of, bool, int, real, char, \
+  typeArray, asCast, isType, of, bool, int, real, scynot, char, \
   string, literal, array, repeat, whileLoop, to, at, ifSel, \
   elifSel, elseSel, opParen, clParen, function, returnFun, \
   entryPoint, opBraces, clBraces, opBrackets, clBrackets, \
   unary,  exp, mult, additive, bitShift, relational, eqOrDiff,\
-  bitAnd, bitOr, logicAnd, logicOr, attrib, comma = list(range(46))
+  bitAnd, bitOr, logicAnd, logicOr, attrib, comma = list(range(47))
 # id = [[:alpha:]](_|[[:alnum:]])*
 # typeBool = "bool"
 # typeInt = "int"
@@ -22,6 +21,7 @@ class TokenCategory(Enum):
 # bool = "true"|"false"
 # int = [[:digit:]]+
 # real = [[:digit:]]+"."[[:digit:]]*
+# scynot = {real}e{int}
 # char = "'"(\\.|[^"\\])?"'"
 # string = \"(\\.|[^"\\])*\"
 # literal = {bool}|{int}|{real}|{char}|{string}
