@@ -7,7 +7,7 @@ class TokenCategory(Enum):
   elifSel, elseSel, opParen, clParen, function, returnFun, \
   entryPoint, opBraces, clBraces, opBrackets, clBrackets, \
   unary,  exp, mult, additive, bitShift, relational, eqOrDiff,\
-  bitAnd, bitOr, logicAnd, logicOr, attrib, comma = list(range(47))
+  bitAnd, bitOr, logicAnd, logicOr, attrib, comma = list(range(45))
 # id = [[:alpha:]](_|[[:alnum:]])*
 # typeBool = "bool"
 # typeInt = "int"
