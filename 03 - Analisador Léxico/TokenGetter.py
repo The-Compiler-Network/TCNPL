@@ -1,6 +1,7 @@
 DEBUG = 0
 separator = {'{', '}', '(', ')', ',', '"', ' '}
 
+
 def splitEachTokenRetardVersion(line):
     aux = line.split()
     for s in separator:
@@ -21,20 +22,25 @@ def splitEachTokenRetardVersion(line):
                     string += c
             if (string != ""): aux2 += [string]
         aux = aux2
-    return(aux)
+    return (aux)
+
 
 def splitEachToken(line):
     token = []
     newCol, string = 0, ""
     for col, c in enumerate(line):
-        if (c in separator):
-            if (string != ""): token += [[newCol, string]]
-            if (c != ' '): token += [[col + (newCol != 0), c]]
+        if c in separator:
+            if string != "":
+                token += [[newCol, string]]
+            if c != ' ':
+                token += [[col + (newCol != 0), c]]
             newCol, string = col + 2, ""
         else:
             string += c
-    if (string != ""): token += [[newCol, string]]
-    return(token)
+    if string != "":
+        token += [[newCol, string]]
+    return token
+
 
 lines = []
 while (True):
@@ -51,7 +57,7 @@ for l, line in enumerate(lines):
 
 prev = 0
 for t in token:
-    if (t[0] > prev):
+    if t[0] > prev:
         prev = t[0]
         print()
     print("[%04d, %04d] () {%s}" % (t[0], t[1], t[2]))
