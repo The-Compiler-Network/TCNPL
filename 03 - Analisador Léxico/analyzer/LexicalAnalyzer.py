@@ -7,6 +7,8 @@ from model.Token import Token
 class LexicalAnalyzer:
 
     SEPARATORS = {'{', '}', '(', ')', ',', '"', ' '}
+    ESCAPE_CHAR = {"\\\"": '\"', "\\\\": '\\', "\\\'": '\'', "\\n": '\n', "\\r": '\r', "\\t": '\t', "\\b": '\b', "\\f":
+                   '\f', "\\v": '\v', "\\0": '\0'}
     file = None
     token_buffer = []
     code_lines = []
@@ -37,8 +39,29 @@ class LexicalAnalyzer:
         self.current_line += 1
         new_col = 0
         string = ""
-        for col, c in enumerate(line):
-            if self.is_separator(c):
+        col, line_size = 0, len(line)
+        while col < line_size:
+            c = line[col]
+            if c == '"':
+                string += c
+                col += 1
+                while col < line_size:
+                    c = line[col]
+                    if c != '\\':
+                        string += c
+                    if c == '"':
+                        break
+                    if c == '\\':
+                        col += 1
+                        if col < line_size:
+                            c = line[col]
+                        c = self.ESCAPE_CHAR["\\" + c]
+                        string += c
+                    col += 1
+                self.token_buffer.append(Token(TokenPosition(self.current_line, new_col), None, string))
+                string = ""
+                new_col = col + 1
+            elif self.is_separator(c):
                 if string:
                     self.token_buffer.append(Token(TokenPosition(self.current_line, new_col), None, string))
                 if c != ' ':
@@ -50,6 +73,7 @@ class LexicalAnalyzer:
                 string = ""
             else:
                 string += c
+            col += 1
         if string:
             self.token_buffer.append(Token(TokenPosition(self.current_line, new_col), None, string))
         return True

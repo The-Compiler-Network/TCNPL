@@ -1,5 +1,5 @@
 @isEntryPoint
 function helloWorld() is int {
-    textOut("Alô mundo!")
+    textOut("Alô \n\tmundo!", "\"")
     return 0
 }

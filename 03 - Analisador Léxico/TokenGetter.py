@@ -1,30 +1,6 @@
 DEBUG = 0
 separator = {'{', '}', '(', ')', ',', '"', ' '}
 
-
-def splitEachTokenRetardVersion(line):
-    aux = line.split()
-    for s in separator:
-        aux2 = []
-        if (DEBUG): print(aux, s)
-        for a in aux:
-            if (DEBUG): print(a, s)
-            if (a == s):
-                aux2 += [a]
-                continue
-            string = ""
-            for c in a:
-                if (c == s):
-                    aux += [s]
-                    if (string != ""): aux2 += [string]
-                    string = ""
-                else:
-                    string += c
-            if (string != ""): aux2 += [string]
-        aux = aux2
-    return (aux)
-
-
 def splitEachToken(line):
     token = []
     newCol, string = 0, ""
