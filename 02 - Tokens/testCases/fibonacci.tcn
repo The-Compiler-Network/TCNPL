@@ -5,19 +5,21 @@ function fibonacci(limit is int) {
     a, b, aux is int
     a = 0
     b = 1
-    textOut(a)
-    repeat while (a < limit) {
+    textOut(format("%int", a))
+    repeat while (a <= limit) {
         aux = a
         a = b
         b = aux + b
-        textOut(", " + a)
+        if (a <= limit) {
+            textOut(format(", %int", a))
+        }
     }
 }
 
 @isEntryPoint
 function main() is int {
     limit is int
-    limit = lineIn() as int
+    in("%int", limit)
     fibonacci(limit)
     return 0
 }

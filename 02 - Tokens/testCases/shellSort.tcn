@@ -16,16 +16,23 @@ function shellSort(size is int, arr is array[] of int) {
     }
 }
 
+function printArray(size is int, arr is array[] of int) {
+    i is int
+    repeat (i = 0 to size - 1) {
+        textOut(format("%int", arr[i]))
+    }
+}
+
 @isEntryPoint
 function main() is int {
     i, size is int
-    size = lineIn() as int
+    in("%int", size)
     arr is array[size] of int
-    line is array[size] of string
-    line = split(lineIn(), ' ')
     repeat (i = 0 to size - 1) {
-        arr[i] = line[i] as int
+        in("%int", arr[i])
     }
+    printArray(size, arr)
     shellSort(size, arr)
+    printArray(size, arr)
     return 0
 }
