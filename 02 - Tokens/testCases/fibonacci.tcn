@@ -1,25 +1,25 @@
 function fibonacci(limit is int) {
-    if (limit < 0) {
-        return
-    }
-    a, b, aux is int
-    a = 0
-    b = 1
-    textOut(format("%int", a))
-    repeat while (a <= limit) {
-        aux = a
-        a = b
-        b = aux + b
-        if (a <= limit) {
-            textOut(format(", %int", a))
-        }
-    }
+	if (limit < 0) {
+		return
+	}
+	a, b, aux is int
+	a = 0
+	b = 1
+	textOut(format("%int", a))
+	repeat while (a <= limit) {
+		aux = a
+		a = b
+		b = aux + b
+		if (a <= limit) {
+			textOut(format(", %int", a))
+		}
+	}
 }
 
 @isEntryPoint
 function main() is int {
-    limit is int
-    in("%int", limit)
-    fibonacci(limit)
-    return 0
+	limit is int
+	in("%int", limit)
+	fibonacci(limit)
+	return 0
 }
