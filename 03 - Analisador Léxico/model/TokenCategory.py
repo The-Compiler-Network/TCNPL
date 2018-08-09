@@ -1,6 +1,5 @@
 from enum import Enum
 
-
 class TokenCategory(Enum):
 	id, typeBool, typeInt, typeReal, typeChar, typeString, \
 	typeArray, asCast, isType, of, bool, int, real, scynot, char, \
@@ -15,6 +14,12 @@ class TokenCategory(Enum):
 
 	def classify(string):
 		i = 0
+
+		if string[i] == '"' or string[i] == '\'':
+			if len(string) > 1 and string[0] == string[len(string) - 1]:
+				return TokenCategory.string if string[0] == '"' else TokenCategory.char
+			else:
+				return TokenCategory.unknown
 
 		if string[i] == "true" or string[i] == "false":
 			return TokenCategory.bool
