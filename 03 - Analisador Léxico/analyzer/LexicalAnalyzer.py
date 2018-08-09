@@ -55,10 +55,10 @@ class LexicalAnalyzer:
 	def get_category(self, string):
 		if string in self.keyword_token_map:
 			return self.keyword_token_map[string]
-		try:
-			return TokenCategory[string]
-		except KeyError:
-			return TokenCategory.id
+		# try:
+		# 	return TokenCategory[string]
+		# except KeyError:
+		return TokenCategory.classify(string)
 
 	def parse_next_line(self):
 		if self.current_line >= self.lines_qt:
@@ -76,7 +76,26 @@ class LexicalAnalyzer:
 
 		while col < line_size:
 			c = line[col]
-			if c == '"':  # string literal
+			if c == '\'': # character literal
+				string = ""
+				col += 1
+				if line[col] == '\\':
+					col += 1
+					if col < line_size:
+						string += self.ESCAPE_CHAR["\\" + line[col]]
+				else:
+					string += line[col]
+				col += 1
+				if col < line_size and line[col] != '\'':
+					while col < line_size and line[col] != '\'':
+						string += line[col]
+						col += 1
+					self.token_buffer.append(Token(TokenPosition(self.current_line, new_col), TokenCategory.unknown, string))
+				else:
+					self.token_buffer.append(Token(TokenPosition(self.current_line, new_col), TokenCategory.char, string))
+				string = ""
+				new_col = col + 1 + (self.TAB_SIZE * tabs)
+			elif c == '"':  # string literal
 				col += 1
 				while col < line_size:
 					c = line[col]
@@ -93,16 +112,16 @@ class LexicalAnalyzer:
 					col += 1
 				self.token_buffer.append(Token(TokenPosition(self.current_line, new_col), TokenCategory.string, string))
 				string = ""
-				new_col = col + 1 + (self.TAB_SIZE * tabs - 1)
+				new_col = col + 1 + (self.TAB_SIZE * tabs)
 			elif self.is_separator(c):
 				if string:
 					self.token_buffer.append(Token(TokenPosition(self.current_line, new_col), self.get_category(string), string))
 				if c != ' ' and c != '\t':
 					ccol = col
 					if new_col:
-						ccol += 1 + (self.TAB_SIZE * tabs - 1)
+						ccol += 1 + (self.TAB_SIZE * tabs)
 					self.token_buffer.append(Token(TokenPosition(self.current_line, ccol), self.SEPARATORS[c], c))
-				new_col = col + 2 + (self.TAB_SIZE * tabs - 1)
+				new_col = col + 2 + (self.TAB_SIZE * tabs)
 				string = ""
 			else:  # id OR LEXICAL ERROR
 				string += c
