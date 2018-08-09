@@ -7,8 +7,8 @@ class TokenCategory(Enum):
 	string, repeat, whileLoop, to, at, ifSel, \
 	elifSel, elseSel, opParen, clParen, function, returnFun, \
 	entryPoint, opBraces, clBraces, opBrackets, clBrackets, \
-	unary,  exp, mult, additive, bitShift, relational, eqOrDiff,\
-	bitAnd, bitOr, logicAnd, logicOr, attrib, comma, unknown = list(range(46))
+	unary,  exp, mult, plus, minus, bitShift, relational, eqOrDiff,\
+	bitAnd, bitOr, logicAnd, logicOr, attrib, comma, unknown = list(range(47))
 
 	def __str__(self):
 		return "%04d, %10s" % (self.value, self.name)
@@ -81,10 +81,11 @@ class TokenCategory(Enum):
 # clBraces = "}"
 # opBrackets = "["
 # clBrackets = "]"
-# unary = "-"|"!"|"~"
+# unary = "!"|"~"
 # exp = "**"|"*/"
 # mult = "*"|"/"|"%"
-# additive = "+"|"-"
+# plus = "+" # should have a single category for '+' sign, since it has multiple features
+# minus = "-" # should have a single category for '-' sign, since it has multiple features
 # bitShift = "<<"|">>"
 # relational = "<"|"<="|">="|">"
 # eqOrDiff = "=="|"!="

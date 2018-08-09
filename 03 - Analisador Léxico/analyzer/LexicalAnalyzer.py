@@ -8,8 +8,16 @@ from model.TokenCategory import TokenCategory
 class LexicalAnalyzer:
 
 	TAB_SIZE = 4
-	SEPARATORS = {'{': TokenCategory.opBraces, '}': TokenCategory.clBraces, '(': TokenCategory.opParen, ')':
-				  TokenCategory.clParen, ',': TokenCategory.comma, '"': None, ' ': None, '\t': None}
+	SEPARATORS = {'(': TokenCategory.opParen, ')': TokenCategory.clParen, '{': TokenCategory.opBraces,
+				  '}': TokenCategory.clBraces, '[': TokenCategory.opBrackets, ']':TokenCategory.clBrackets,
+				  '!': TokenCategory.unary, '~': TokenCategory.unary, '-': TokenCategory.minus, "**": TokenCategory.exp,
+				  "*/": TokenCategory.exp, '*': TokenCategory.mult, '/': TokenCategory.mult, '%': TokenCategory.mult,
+				  '+': TokenCategory.plus, "<<": TokenCategory.bitShift, ">>": TokenCategory.bitShift,
+				  '<': TokenCategory.relational, '>': TokenCategory.relational, "<=": TokenCategory.relational,
+				  ">=": TokenCategory.relational, "==": TokenCategory.eqOrDiff, "!=": TokenCategory.eqOrDiff,
+				  '&': TokenCategory.bitAnd, '|': TokenCategory.bitOr, "&&": TokenCategory.logicAnd,
+				  "||": TokenCategory.logicOr, '=': TokenCategory.attrib, ',': TokenCategory.comma, '"': None,
+				  ' ': None, '\t': None}
 	ESCAPE_CHAR = {"\\\"": '\"', "\\\\": '\\', "\\\'": '\'', "\\n": '\n', "\\r": '\r', "\\t": '\t', "\\b": '\b', "\\f":
                    '\f', "\\v": '\v', "\\0": '\0'}
 	keyword_token_map = {"bool": TokenCategory.typeBool, "int": TokenCategory.typeInt, "real": TokenCategory.typeReal,
@@ -17,13 +25,7 @@ class LexicalAnalyzer:
 						 "array": TokenCategory.typeArray, "as": TokenCategory.asCast, "is": TokenCategory.isType,
 						 "while": TokenCategory.whileLoop, "if": TokenCategory.ifSel, "elif": TokenCategory.elifSel,
 						 "else": TokenCategory.elseSel, "function": TokenCategory.function,
-						 "return": TokenCategory.returnFun, "@isEntryPoint": TokenCategory.entryPoint,
-						 "-": TokenCategory.unary, "**": TokenCategory.exp, "*": TokenCategory.mult,
-						 "+": TokenCategory.additive, "<<": TokenCategory.bitShift,
-						 ">>": TokenCategory.bitShift, "<": TokenCategory.relational, ">": TokenCategory.relational,
-						 "<=": TokenCategory.relational, ">=": TokenCategory.relational, "==": TokenCategory.eqOrDiff,
-						 "!=": TokenCategory.eqOrDiff, "&": TokenCategory.bitAnd, "|": TokenCategory.bitOr,
-						 "&&": TokenCategory.logicAnd, "||": TokenCategory.logicOr, "=": TokenCategory.attrib}
+						 "return": TokenCategory.returnFun, "@isEntryPoint": TokenCategory.entryPoint}
 	file = None
 	token_buffer = []
 	code_lines = []
@@ -36,9 +38,9 @@ class LexicalAnalyzer:
 		except IOError:
 			raise CodeNotFoundError("The specified file from " + filepath +
 									" could not be found. Please check the path.")
-		self.code_lines = self.file.readlines()
-		self.file.close()
-		self.lines_qt = len(self.code_lines)
+		# self.code_lines = self.file.readlines()
+		# self.file.close()
+		# self.lines_qt = len(self.code_lines)
 
 	# TODO: ARRUMAR. APENAS POG TEMPORÁRIA
 	def next_token(self):
@@ -60,11 +62,17 @@ class LexicalAnalyzer:
 		# except KeyError:
 		return TokenCategory.classify(string)
 
-	def parse_next_line(self):
-		if self.current_line >= self.lines_qt:
-			raise EOFError
+	def read_next_line(self):
+		line = self.file.readline()
+		if line:
+			return line.strip('\n')
+		self.file.close()
+		raise EOFError
 
-		line = self.code_lines[self.current_line].strip('\n')
+	def parse_next_line(self):
+		line = self.read_next_line()
+
+		#line = self.code_lines[self.current_line].strip('\n')
 		self.current_line += 1
 		new_col, string, col, line_size, tabs = 1, "", 0, len(line), 0
 		while col < line_size and (line[col] == ' ' or line[col] == '\t'):
@@ -120,6 +128,18 @@ class LexicalAnalyzer:
 					ccol = col
 					if new_col:
 						ccol += 1 + (self.TAB_SIZE * tabs)
+					if c == '*':
+						col += 1
+						if col < line_size and (line[col] == '/' or line[col] == '*'):
+							c += line[col]
+						else:
+							col -= 1
+					if c == '<' or c == '>':
+						col += 1
+						if col < line_size  and (line[col] == '<' or line[col] == '>'):
+							c += line[col]
+						else:
+							col -= 1
 					self.token_buffer.append(Token(TokenPosition(self.current_line, ccol), self.SEPARATORS[c], c))
 				new_col = col + 2 + (self.TAB_SIZE * tabs)
 				string = ""
