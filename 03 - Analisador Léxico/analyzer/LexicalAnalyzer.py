@@ -115,6 +115,11 @@ class LexicalAnalyzer:
 							c += line[col]
 						else:
 							col -= 1
+					if c == '/':
+						col += 1
+						if col < line_size and line[col] == '/':
+							return True
+						col -= 1
 					self.token_buffer.append(Token(TokenPosition(self.current_line, new_col), self.separators[c], c))
 				string, new_col = "", col + 2 + (self.TAB_SIZE * tabs)
 			else:
