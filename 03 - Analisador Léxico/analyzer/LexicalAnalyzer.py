@@ -57,9 +57,10 @@ class LexicalAnalyzer:
 		return TokenCategory.classify(string)
 
 	def read_next_line(self):
-		line = self.file.readline()
+		line = self.file.readline().strip('\n')
 		if line:
-			return line.strip('\n')
+			print(line.strip('\t'))
+			return line
 		self.file.close()
 		raise EOFError
 

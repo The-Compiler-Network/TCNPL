@@ -1,6 +1,6 @@
 from analyzer.LexicalAnalyzer import LexicalAnalyzer
 
-la = LexicalAnalyzer("../02 - Tokens/testCases/helloWorld.tcn")
+la = LexicalAnalyzer("../02 - Tokens/testCases/fibonacci.tcn")
 
 firstLine = -1
 while True:
