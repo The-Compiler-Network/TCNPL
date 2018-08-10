@@ -59,7 +59,7 @@ class LexicalAnalyzer:
 	def read_next_line(self):
 		line = self.file.readline().strip('\n')
 		if line:
-			print(line.strip('\t'))
+			print(line)
 			return line
 		self.file.close()
 		raise EOFError
@@ -103,7 +103,7 @@ class LexicalAnalyzer:
 				if string:
 					self.token_buffer.append(Token(TokenPosition(self.current_line, new_col), self.get_category(string), string))
 				if c != ' ' and c != '\t':
-					new_col = col + 1 + (self.TAB_SIZE * tabs)
+					new_col = col + 1 + (self.TAB_SIZE - 1) * tabs
 					if c == '*':
 						col += 1
 						if col < line_size and (line[col] == '/' or line[col] == '*'):
@@ -112,7 +112,7 @@ class LexicalAnalyzer:
 							col -= 1
 					if c == '<' or c == '>':
 						col += 1
-						if col < line_size and (line[col] == '<' or line[col] == '>'):
+						if col < line_size and (line[col] == '<' or line[col] == '>' or line[col] == '='):
 							c += line[col]
 						else:
 							col -= 1
@@ -122,7 +122,7 @@ class LexicalAnalyzer:
 							return True
 						col -= 1
 					self.token_buffer.append(Token(TokenPosition(self.current_line, new_col), self.separators[c], c))
-				string, new_col = "", col + 2 + (self.TAB_SIZE * tabs)
+				string, new_col = "", col + 2 + (self.TAB_SIZE - 1) * tabs
 			else:
 				string += c
 			col += 1

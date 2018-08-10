@@ -1,15 +1,20 @@
-[0001, 0001] (0027, entryPoint) {@isEntryPoint}
-[0002, 0001] (0025,   function) {function}
-[0002, 0010] (0000,         id) {helloWorld}
-[0002, 0020] (0023,    opParen) {(}
-[0002, 0021] (0024,    clParen) {)}
-[0002, 0023] (0008,     isType) {is}
-[0002, 0026] (0002,    typeInt) {int}
-[0002, 0030] (0028,   opBraces) {{}
-[0003, 0005] (0000,         id) {textOut}
-[0003, 0012] (0023,    opParen) {(}
-[0003, 0013] (0015,     string) {Alô mundo!}
-[0003, 0025] (0024,    clParen) {)}
-[0004, 0005] (0026,  returnFun) {return}
-[0004, 0012] (0011,        int) {0}
-[0005, 0001] (0029,   clBraces) {}}
+@isEntryPoint
+        [0001, 0001] (0027, entryPoint) {@isEntryPoint}
+function helloWorld() is int {
+        [0002, 0001] (0025,   function) {function}
+        [0002, 0010] (0000,         id) {helloWorld}
+        [0002, 0020] (0023,    opParen) {(}
+        [0002, 0021] (0024,    clParen) {)}
+        [0002, 0023] (0008,     isType) {is}
+        [0002, 0026] (0002,    typeInt) {int}
+        [0002, 0030] (0028,   opBraces) {{}
+    textOut("Alô mundo!")
+        [0003, 0005] (0000,         id) {textOut}
+        [0003, 0012] (0023,    opParen) {(}
+        [0003, 0013] (0015,     string) {Alô mundo!}
+        [0003, 0025] (0024,    clParen) {)}
+    return 0
+        [0004, 0005] (0026,  returnFun) {return}
+        [0004, 0012] (0011,        int) {0}
+}
+        [0005, 0001] (0029,   clBraces) {}}

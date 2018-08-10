@@ -12,4 +12,4 @@ class Token:
 		return self.position.line
 
 	def __str__(self):
-		return "        [%04d, %04d] () {%s}" % (min(9999, self.position.line), min(9999, self.position.column), self.value)
+		return "        [%04d, %04d] (%s) {%s}" % (min(9999, self.position.line), min(9999, self.position.column), self.category, self.value)
