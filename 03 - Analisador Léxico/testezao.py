@@ -7,7 +7,7 @@ while True:
 	token = la.next_token()
 	if not token:
 		break
-	if token.get_line() > firstLine:
-		firstLine = token.get_line()
-		print()
+	# if token.get_line() > firstLine:
+	# 	firstLine = token.get_line()
+	# 	print()
 	print(token)
