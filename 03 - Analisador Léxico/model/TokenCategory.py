@@ -17,7 +17,13 @@ class TokenCategory(Enum):
 
 		if string[i] == '"' or string[i] == '\'':
 			if len(string) > 1 and string[0] == string[len(string) - 1]:
-				return TokenCategory.string if string[0] == '"' else TokenCategory.char
+				if string[0] == '"':
+					return TokenCategory.string
+				else:
+					if len(string) > 3:
+						return TokenCategory.unknown
+					else:
+						return TokenCategory.char
 			else:
 				return TokenCategory.unknown
 

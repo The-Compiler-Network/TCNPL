@@ -28,10 +28,15 @@ class LexicalAnalyzer:
 						 "elif": TokenCategory.elifSel, "else": TokenCategory.elseSel, "function": TokenCategory.function,
 						 "return": TokenCategory.returnFun, "@isEntryPoint": TokenCategory.entryPoint}
 	file = None
+	line = None
+	line_size = 0
 	token_buffer = []
-	code_lines = []
-	lines_qt = 0
 	current_line = 0
+	previous_column = 0
+	current_column = 0
+	line_tabs = 0
+	previous_line_pointer = 0
+	line_pointer = 0
 
 	def __init__(self, filepath):
 		try:
@@ -40,16 +45,89 @@ class LexicalAnalyzer:
 			raise CodeNotFoundError("The specified file from " + filepath +
 									" could not be found. Please check the path.")
 
-	# TODO: ARRUMAR. APENAS POG TEMPORÁRIA
 	def next_token(self):
-		if not self.token_buffer:
-			while True:
-				try:
-					if self.parse_next_line():
+		if self.line is None or self.line_pointer >= self.line_size:
+			try:
+				self.line = self.read_next_line()
+			except EOFError:
+				return None
+			self.current_line += 1
+
+			self.current_column, self.line_pointer, self.line_size, self.line_tabs = 1, 0, len(self.line), 0
+			while self.line_pointer < self.line_size and (self.line[self.line_pointer] == ' ' or self.line[self.line_pointer] == '\t'):
+				self.current_column += 1 if self.line[self.line_pointer] == ' ' else self.TAB_SIZE
+				self.line_tabs += 1 if self.line[self.line_pointer] == '\t' else 0
+				self.line_pointer += 1
+			if self.line_pointer == self.line_size:  # empty line
+				return self.next_token()
+		else:
+			self.current_column = self.line_pointer + ((self.TAB_SIZE - 1) * self.line_tabs) + 1
+
+		self.previous_column, string = self.current_column, ""
+		while self.line_pointer < self.line_size:
+			char = self.line[self.line_pointer]
+			if char == '\'' or char == '"':  # string and character literals
+				string = char
+				self.line_pointer += 1
+				while self.line_pointer < self.line_size:
+					c = self.line[self.line_pointer]
+					if c == '\\':
+						self.line_pointer += 1
+						if self.line_pointer < self.line_size and self.line[self.line_pointer] in self.escape_char:
+							string += self.escape_char[self.line[self.line_pointer]]
+						else:
+							string += '\\'
+					else:
+						string += c
+					if c == string[0]:
 						break
-				except EOFError:
-					return None
-		return self.token_buffer.pop(0)
+					self.line_pointer += 1
+				category = self.get_category(string)
+				if category != TokenCategory.unknown:
+					string = string[1:len(string)-1]
+				self.line_pointer += 1
+				return Token(TokenPosition(self.current_line, self.previous_column), category, string)
+			elif self.is_separator(char):
+				if string:
+					return Token(TokenPosition(self.current_line, self.previous_column), self.get_category(string), string)
+				if char != ' ' and char != '\t':
+					if char == '*':
+						self.line_pointer += 1
+						if self.line_pointer < self.line_size and (self.line[self.line_pointer] == '/' or self.line[self.line_pointer] == '*'):
+							char += self.line[self.line_pointer]
+						else:
+							self.line_pointer -= 1
+					if char == '<' or char == '>':
+						self.line_pointer += 1
+						if self.line_pointer < self.line_size and (self.line[self.line_pointer] == '<' or self.line[self.line_pointer] == '>' or self.line[self.line_pointer] == '='):
+							char += self.line[self.line_pointer]
+						else:
+							self.line_pointer -= 1
+					if char == '/':
+						self.line_pointer += 1
+						if self.line_pointer < self.line_size and self.line[self.line_pointer] == '/':
+							return self.next_token()
+						self.line_pointer -= 1
+					if char == '&' or char == '|':
+						self.line_pointer += 1
+						if self.line_pointer < self.line_size and (self.line[self.line_pointer] == '&' or self.line[self.line_pointer] == '|'):
+							char += self.line[self.line_pointer]
+						else:
+							self.line_pointer -= 1
+					self.line_pointer += 1
+					return Token(TokenPosition(self.current_line, self.previous_column), self.separators[char], char)
+				else:
+					while self.line[self.line_pointer] == ' ' or self.line[self.line_pointer] == '\t':
+						self.line_pointer += 1
+						self.line_tabs += 1 if self.line[self.line_pointer] == '\t' else 0
+					return self.next_token()
+			else:
+				string += char
+			self.line_pointer += 1
+		if string:
+			return Token(TokenPosition(self.current_line, self.previous_column), self.get_category(string), string)
+
+		return None
 
 	def get_category(self, string):
 		if string in self.keyword_token_map:
@@ -65,75 +143,6 @@ class LexicalAnalyzer:
 		raise EOFError
 
 	def parse_next_line(self):
-		line = self.read_next_line()
-		self.current_line += 1
-
-		new_col, string, col, line_size, tabs = 1, "", 0, len(line), 0
-		while col < line_size and (line[col] == ' ' or line[col] == '\t'):
-			new_col += 1 if line[col] == ' ' else self.TAB_SIZE
-			tabs += 1 if line[col] == '\t' else 0
-			col += 1
-		if col == line_size:  # empty line
-			return False
-
-		while col < line_size:
-			c = line[col]
-			if c == '\'' or c == '"':  # string and character literals
-				string = c
-				col += 1
-				while col < line_size:
-					c = line[col]
-					if c == '\\':
-						col += 1
-						if col < line_size and line[col] in self.escape_char:
-							string += self.escape_char[line[col]]
-						else:
-							string += '\\'
-					else:
-						string += c
-					if c == string[0]:
-						break
-					col += 1
-				category = self.get_category(string)
-				if category != TokenCategory.unknown:
-					string = string[1:len(string)-1]
-				self.token_buffer.append(Token(TokenPosition(self.current_line, new_col), category, string))
-				string, new_col = "", col + 1 + (self.TAB_SIZE * tabs)
-			elif self.is_separator(c):
-				if string:
-					self.token_buffer.append(Token(TokenPosition(self.current_line, new_col), self.get_category(string), string))
-				if c != ' ' and c != '\t':
-					new_col = col + 1 + (self.TAB_SIZE - 1) * tabs
-					if c == '*':
-						col += 1
-						if col < line_size and (line[col] == '/' or line[col] == '*'):
-							c += line[col]
-						else:
-							col -= 1
-					if c == '<' or c == '>':
-						col += 1
-						if col < line_size and (line[col] == '<' or line[col] == '>' or line[col] == '='):
-							c += line[col]
-						else:
-							col -= 1
-					if c == '/':
-						col += 1
-						if col < line_size and line[col] == '/':
-							return True
-						col -= 1
-					if c == '&' or c == '|':
-						col += 1
-						if col < line_size and (line[col] == '&' or line[col] == '|'):
-							c += line[col]
-						else:
-							col -= 1
-					self.token_buffer.append(Token(TokenPosition(self.current_line, new_col), self.separators[c], c))
-				string, new_col = "", col + 2 + (self.TAB_SIZE - 1) * tabs
-			else:
-				string += c
-			col += 1
-		if string:
-			self.token_buffer.append(Token(TokenPosition(self.current_line, new_col), self.get_category(string), string))
 
 		return True
 
