@@ -17,15 +17,15 @@ class LexicalAnalyzer:
 				  '<': TokenCategory.relational, '>': TokenCategory.relational, "<=": TokenCategory.relational,
 				  ">=": TokenCategory.relational, "==": TokenCategory.eqOrDiff, "!=": TokenCategory.eqOrDiff,
 				  '&': TokenCategory.bitAnd, '|': TokenCategory.bitOr, "&&": TokenCategory.logicAnd,
-				  "||": TokenCategory.logicOr, '=': TokenCategory.attrib, ',': TokenCategory.comma, '"': None,
-				  ' ': None, '\t': None}
+				  "||": TokenCategory.logicOr, "&|": TokenCategory.unknown, "|&": TokenCategory.unknown,
+				  '=': TokenCategory.attrib, ',': TokenCategory.comma, '"': None, ' ': None, '\t': None}
 	escape_char = {"\"": '\"', "\\": '\\', "\'": '\'', "n": '\n', "r": '\r', "t": '\t', "b": '\b', "f":
 		'\f', "v": '\v', "0": '\0'}
 	keyword_token_map = {"bool": TokenCategory.typeBool, "int": TokenCategory.typeInt, "real": TokenCategory.typeReal,
 						 "char": TokenCategory.typeChar, "string": TokenCategory.typeString,
-						 "array": TokenCategory.typeArray, "as": TokenCategory.asCast, "is": TokenCategory.isType,
-						 "while": TokenCategory.whileLoop, "if": TokenCategory.ifSel, "elif": TokenCategory.elifSel,
-						 "else": TokenCategory.elseSel, "function": TokenCategory.function,
+						 "array": TokenCategory.typeArray, "to": TokenCategory.to, "as": TokenCategory.asCast,
+						 "is": TokenCategory.isType, "while": TokenCategory.whileLoop, "if": TokenCategory.ifSel,
+						 "elif": TokenCategory.elifSel, "else": TokenCategory.elseSel, "function": TokenCategory.function,
 						 "return": TokenCategory.returnFun, "@isEntryPoint": TokenCategory.entryPoint}
 	file = None
 	token_buffer = []
@@ -121,6 +121,12 @@ class LexicalAnalyzer:
 						if col < line_size and line[col] == '/':
 							return True
 						col -= 1
+					if c == '&' or c == '|':
+						col += 1
+						if col < line_size and (line[col] == '&' or line[col] == '|'):
+							c += line[col]
+						else:
+							col -= 1
 					self.token_buffer.append(Token(TokenPosition(self.current_line, new_col), self.separators[c], c))
 				string, new_col = "", col + 2 + (self.TAB_SIZE - 1) * tabs
 			else:

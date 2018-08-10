@@ -44,7 +44,7 @@ function shellSort(size is int, arr is array[] of int) {
         [0006, 0017] (0000,         id) {i}
         [0006, 0019] (0044,     attrib) {=}
         [0006, 0021] (0000,         id) {h}
-        [0006, 0023] (0000,         id) {to}
+        [0006, 0023] (0018,         to) {to}
         [0006, 0026] (0023,    opParen) {(}
         [0006, 0027] (0000,         id) {size}
         [0006, 0032] (0036,      minus) {-}
@@ -72,8 +72,7 @@ function shellSort(size is int, arr is array[] of int) {
         [0009, 0027] (0000,         id) {j}
         [0009, 0029] (0038, relational) {>=}
         [0009, 0032] (0000,         id) {h}
-        [0009, 0034] (0040,     bitAnd) {&}
-        [0009, 0035] (0040,     bitAnd) {&}
+        [0009, 0034] (0042,   logicAnd) {&&}
         [0009, 0037] (0000,         id) {arr}
         [0009, 0040] (0030, opBrackets) {[}
         [0009, 0041] (0000,         id) {j}
