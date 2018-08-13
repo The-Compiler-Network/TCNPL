@@ -1,0 +1,17 @@
+@isEntryPoint
+function media() is int {
+    n is int // calcula a media de n numeros inteiros
+    in("%int", n)
+    i, temp, tot is int
+    repeat (i = 0 to n - 1) {
+        in("%int", temp)
+        tot = tot + temp
+    }
+    if (n) {
+        textOut("Media e: " + (tot/n))
+    }
+    else {
+        textOut("Nenhum numero informado")
+    }
+    return 0
+}
