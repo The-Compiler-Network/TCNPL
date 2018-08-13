@@ -20,8 +20,9 @@ class LexicalAnalyzer:
                   "||": TokenCategory.logicOr, "&|": TokenCategory.unknown, "|&": TokenCategory.unknown,
                   '=': TokenCategory.attrib, ',': TokenCategory.comma, '"': None, ' ': None, '\t': None}
     escape_char = {"\"": '\"', "\\": '\\', "\'": '\'', "n": '\n', "r": '\r', "t": '\t', "b": '\b', "f":
-        '\f', "v": '\v', "0": '\0'}
-    keyword_token_map = {"bool": TokenCategory.typeBool, "int": TokenCategory.typeInt, "real": TokenCategory.typeReal,
+       			   '\f', "v": '\v', "0": '\0'}
+    keyword_token_map = {"bool": TokenCategory.typeBool, "true": TokenCategory.bool, "false": TokenCategory.bool,
+						 "int": TokenCategory.typeInt, "real": TokenCategory.typeReal,
                          "char": TokenCategory.typeChar, "string": TokenCategory.typeString,
                          "array": TokenCategory.typeArray, "to": TokenCategory.to, "as": TokenCategory.asCast,
                          "is": TokenCategory.isType, "while": TokenCategory.whileLoop, "if": TokenCategory.ifSel,
@@ -149,10 +150,10 @@ class LexicalAnalyzer:
         return TokenCategory.classify(string)
 
     def read_next_line(self):
-        line = self.file.readline().strip('\n')
+        line = self.file.readline()
         if line:
-            print(line)
-            return line
+            print(line, end='')
+            return line.strip('\n')
         self.file.close()
         raise EOFError
 

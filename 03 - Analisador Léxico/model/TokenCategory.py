@@ -27,9 +27,6 @@ class TokenCategory(Enum):
 			else:
 				return TokenCategory.unknown
 
-		if string[i] == "true" or string[i] == "false":
-			return TokenCategory.bool
-
 		if 'A' <= string[i] <= 'Z' or 'a' <= string[i] <= 'z':
 			i += 1
 			while i < len(string) and ('A' <= string[i] <= 'Z' or 'a' <= string[i] <= 'z' or '0' <= string[i] <= '9' or string[i] == '_'):
