@@ -122,6 +122,12 @@ class LexicalAnalyzer:
                             char += self.line[self.line_pointer]
                         else:
                             self.line_pointer -= 1
+                    if char == '!':
+                        self.line_pointer += 1
+                        if self.line_pointer < self.line_size and self.line[self.line_pointer] == '=':
+                            char += self.line[self.line_pointer]
+                        else:
+                            self.line_pointer -= 1
                     self.line_pointer += 1
                     return Token(TokenPosition(self.current_line, self.previous_column), self.separators[char], char)
                 else:
