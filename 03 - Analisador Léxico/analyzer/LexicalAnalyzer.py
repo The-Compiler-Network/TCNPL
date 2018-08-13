@@ -6,7 +6,7 @@ from model.TokenCategory import TokenCategory
 
 
 class LexicalAnalyzer:
-    TAB_SIZE = 4
+    TAB_SIZE = 8
     separators = {'(': TokenCategory.opParen, ')': TokenCategory.clParen, '{': TokenCategory.opBraces,
                   '}': TokenCategory.clBraces, '[': TokenCategory.opBrackets, ']': TokenCategory.clBrackets,
                   '!': TokenCategory.unary, '~': TokenCategory.unary, '-': TokenCategory.minus, "**": TokenCategory.exp,
