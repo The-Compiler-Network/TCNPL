@@ -1,0 +1,6 @@
+Ea
+Ea = Ta Ear
+Ear = 'plus' Ta Ear | 'minus' Ta Ear | e
+Ta = Fa Tar
+Tar = 'mult' Fa Tar | e
+Fa = 'int' | '(' Ea ')'

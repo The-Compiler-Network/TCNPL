@@ -12,5 +12,6 @@ while True:
     tokens += [token]
     # print(token)
 
-syntacticAnalyser = SyntacticAnalyser(tokens)
+syntacticAnalyser = SyntacticAnalyser(tokens, sys.argv[2])
+syntacticAnalyser.analyse()
 print(syntacticAnalyser)
