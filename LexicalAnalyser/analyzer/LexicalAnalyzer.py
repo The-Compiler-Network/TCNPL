@@ -106,7 +106,7 @@ class LexicalAnalyzer:
                         self.line_pointer += 1
                         if self.line_pointer < self.line_size and (
                                 self.line[self.line_pointer] == '<' or self.line[self.line_pointer] == '>' or self.line[
-                            self.line_pointer] == '='):
+                                self.line_pointer] == '='):
                             char += self.line[self.line_pointer]
                         else:
                             self.line_pointer -= 1
@@ -152,14 +152,10 @@ class LexicalAnalyzer:
     def read_next_line(self):
         line = self.file.readline()
         if line:
-            print(line, end='')
+            print(line.strip('\n'))
             return line.strip('\n')
         self.file.close()
         raise EOFError
-
-    def parse_next_line(self):
-
-        return True
 
     def is_separator(self, c):
         return c in self.separators
