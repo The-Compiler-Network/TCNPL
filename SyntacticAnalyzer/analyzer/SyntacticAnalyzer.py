@@ -1,7 +1,7 @@
-from LexicalAnalyser.model.Token import Token
+from LexicalAnalyzer.model.Token import Token
 
 
-class SyntacticAnalyser:
+class SyntacticAnalyzer:
     tokens = []
     grammar = {}
     non_terminals = set()

@@ -1,18 +1,18 @@
 import sys
-from LexicalAnalyser.analyzer.LexicalAnalyzer import LexicalAnalyzer
-from SyntacticAnalyser.analyser.SyntacticAnalyser import SyntacticAnalyser
-from SyntacticAnalyser.analyser.SLRParser import SLRParser
+from LexicalAnalyzer.analyzer.LexicalAnalyzer import LexicalAnalyzer
+from SyntacticAnalyzer.analyzer.SyntacticAnalyzer import SyntacticAnalyzer
+from SyntacticAnalyzer.analyzer.SLRParser import SLRParser
 
-lexicalAnalyser = LexicalAnalyzer(sys.argv[1])
-tokens = []
+lexicalAnalyzer = LexicalAnalyzer(sys.argv[1])
+# tokens = []
+#
+# while True:
+#     token = lexicalAnalyzer.next_token()
+#     if not token:
+#         break
+#     tokens += [token]
+#     # print(token)
 
-while True:
-    token = lexicalAnalyser.next_token()
-    if not token:
-        break
-    tokens += [token]
-    # print(token)
-
-syntacticAnalyser = SLRParser(tokens, sys.argv[2])
-syntacticAnalyser.analyse()
-print(syntacticAnalyser)
+syntacticAnalyzer = SLRParser(lexicalAnalyzer, sys.argv[2])
+syntacticAnalyzer.analyse()
+print(syntacticAnalyzer)

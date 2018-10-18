@@ -1,4 +1,1 @@
-Ea
-Ea = Ea 'plus' Ta | Ea 'minus' Ta | Ta
-Ta = Ta 'mult' Fa | Fa
-Fa = 'int' | '(' Ea ')'
+Func = 'entryPoint' 'function' 'id' 'opParen' 'clParen' 'is' 'int'

@@ -1,6 +1,8 @@
-from LexicalAnalyser.model.Token import Token
+from LexicalAnalyzer.model.Token import Token
+from LexicalAnalyzer.analyzer.LexicalAnalyzer import LexicalAnalyzer
 
 class SLRParser:
+    token = None
     tokens = []
     grammar = {}
     grammar_follow = {}
@@ -10,9 +12,15 @@ class SLRParser:
     states = {}
     canonical = []
     table = {}
+    codePointer = 0
+    treePointer = 0
+    stack_history = []
+    lexicalAnalyzer = None
 
-    def __init__(self, tokens, grammar_path):
-        self.tokens = tokens
+    def __init__(self, lexicalAnalyzer, grammar_path):
+        self.lexicalAnalyzer = lexicalAnalyzer
+        self.next_token()
+        self.tokens = []
         try:
             self.read_grammar(open(grammar_path, 'r', encoding="utf-8"))
             for n in self.non_terminals:
@@ -25,11 +33,13 @@ class SLRParser:
         string = "Tokens:\n"
         for token in self.tokens:
             string += str(token) + "\n"
+        string += '\n'
 
         string += "Follow:\n"
         for n in self.non_terminals:
             # print(n, self.grammar_follow)
             string += "follow(%s) = " % n + str(self.grammar_follow[n]) + '\n'
+        string += '\n'
 
         string += "Grammar:\n"
         for rule in self.grammar:
@@ -41,11 +51,12 @@ class SLRParser:
             else:
                 string += self.grammar[rule]
             string += '\n'
-
-        string += "Canonical:\n"
-        for i, state in enumerate(self.canonical):
-            string += "I_%d = " % i + str(state) + '\n'
         string += '\n'
+
+        # string += "Canonical:\n"
+        # for i, state in enumerate(self.canonical):
+        #     string += "I_%d = " % i + str(state) + '\n'
+        # string += '\n'
 
         string += "SLR Table:\n"
         columns = sorted(self.terminals) + ["EOF"] + sorted(self.non_terminals)
@@ -53,11 +64,35 @@ class SLRParser:
         for i in range(len(self.table)):
             index = "I_%d" % i
             string += str(index).center(5, ' ') + "|" + " | ".join([(" ".join(self.table[index][c])).center(10, ' ') for c in columns]) + '\n'
+        string += '\n'
+
+        string += "Stack:\n"
+        for node in self.stack_history:
+            string += str(node) + '\n'
+        string += '\n'
 
         if self.tree:
             string += "Tree:\n"
             string += self.tree_to_string()
         return string
+
+    def tree_to_string(self):
+        self.tree += [[self.grammar['S']]]
+        self.tree.reverse()
+        self.treePointer = 0
+        newTree = []
+        self.tree_to_string_util(0, newTree)
+        tree_string = ""
+        for t in newTree:
+            tree_string += "\t"*t[0] + str(t[1]) + '\n'
+        return(tree_string)
+
+    def tree_to_string_util(self, depth, newTree):
+        newTree += [[depth, self.tree[self.treePointer]]]
+        for element in self.tree[self.treePointer]:
+            if (element in self.non_terminals):
+                self.treePointer += 1
+                self.tree_to_string_util(depth + 1, newTree)
 
     def read_grammar(self, grammar_file):
         self.grammar['S'] = grammar_file.readline().strip('\n')
@@ -193,7 +228,43 @@ class SLRParser:
                     for f in self.grammar_follow[n]:
                         self.table[index][f] = ["r%d" % self.grammar[n].index([*production]), n]
 
+    def actual_token(self):
+        return('\'' + self.token.category.name + '\'' if self.token else "EOF")
+
+    def next_token(self):
+        self.codePointer += 1
+        prev = (self.token.category.name, self.token.value) if self.token else None
+        self.token = self.lexicalAnalyzer.next_token()
+        return(prev)
+
+    def parse(self):
+        self.codePointer = -1
+        stack = [[0, ""]]
+        while (stack):
+            self.stack_history += [stack.copy()]
+
+            state, symbol = stack[len(stack) - 1]
+            action = self.table["I_%d" % state][self.actual_token()]
+
+            if (action[0] == "Error"): return(self.codePointer - 1)
+            if (action[0] == "Accepted"): return(self.codePointer)
+
+            if (action[0][0] == 'e'): # stacks
+                stack += [[int(action[0][1:]), self.next_token()]]
+            elif (action[0][0] == 'r'): # redecuts
+                n = action[1] # gets non_terminal
+                production = self.grammar[n][int(action[0][1:])]
+                now = []
+                for i in range(len(production)):
+                    state, symbol = stack.pop(len(stack) - 1)
+                    now += [symbol]
+                self.tree += [now]
+                state, symbol = stack[len(stack) - 1]
+                trasition = int(self.table["I_%d" % state][n][0])
+                stack += [[trasition, n]]
+
     def analyse(self):
         self.buildCanonical()
         self.buildSLRTable()
+        self.parse()
         pass
