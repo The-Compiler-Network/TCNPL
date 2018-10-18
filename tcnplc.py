@@ -14,5 +14,5 @@ while True:
     # print(token)
 
 syntacticAnalyser = SLRParser(tokens, sys.argv[2])
-# syntacticAnalyser.analyse()
+syntacticAnalyser.analyse()
 print(syntacticAnalyser)

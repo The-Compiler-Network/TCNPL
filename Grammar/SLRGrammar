@@ -1,4 +1,4 @@
 Ea
-Ea = Ea 'plus' Ta | Ea 'minus' Ta
-Ta = Ta 'mult' Fa
+Ea = Ea 'plus' Ta | Ea 'minus' Ta | Ta
+Ta = Ta 'mult' Fa | Fa
 Fa = 'int' | '(' Ea ')'
