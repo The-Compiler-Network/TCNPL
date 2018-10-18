@@ -28,8 +28,8 @@ class SLRParser:
 
         string += "Follow:\n"
         for n in self.non_terminals:
-            print(n, self.grammar_follow)
-            string += "follow(%s) = " % n + self.grammar_follow[n] + '\n'
+            # print(n, self.grammar_follow)
+            string += "follow(%s) = " % n + str(self.grammar_follow[n]) + '\n'
 
         string += "Grammar:\n"
         for rule in self.grammar:
@@ -46,7 +46,13 @@ class SLRParser:
         for i, state in enumerate(self.canonical):
             string += "I_%d = " % i + str(state) + '\n'
         string += '\n'
-        return string
+
+        string += "SLR Table:\n"
+        columns = sorted(self.terminals) + ["EOF"] + sorted(self.non_terminals)
+        string += " "*5 + "|" + " | ".join([c.center(10, ' ') for c in columns]) + '\n'
+        for i in range(len(self.table)):
+            index = "I_%d" % i
+            string += str(index).center(5, ' ') + "|" + " | ".join([(" ".join(self.table[index][c])).center(10, ' ') for c in columns]) + '\n'
 
         if self.tree:
             string += "Tree:\n"
@@ -104,7 +110,7 @@ class SLRParser:
                     if (element != X): continue
                     isLast = i == len(production) - 1
                     if (i < len(production) - 1):
-                        firstMinusEpi = self.first(production[i + 1], set())
+                        firstMinusEpi = self.first(production[i + 1:], set())
                         followSet.update(firstMinusEpi)
                         if ('e' in firstMinusEpi): isLast = True
                 if (isLast):
@@ -157,36 +163,37 @@ class SLRParser:
             i += 1
 
     def initTable(self):
-        for i in range(len(self.states)):
+        for i in range(len(self.canonical)):
             index = "I_%d" % i
             self.table[index] = {}
-            for t in self.terminals + ["EOF"]: self.table[index][t] = ["Error"]
+            for t in self.terminals: self.table[index][t] = ["Error"]
             for n in self.non_terminals: self.table[index][n] = ["Error"]
+            self.table[index]["EOF"] = ["Error"]
 
     def buildSLRTable(self):
-        eofTerminals = self.terminals + ["EOF"]
-        self.table = self.initTable()
+        self.initTable()
 
         # RULE: S' = S .
-        closureSet = self.closure[self.states[(0, grammar['S'])]]
-        self.table["I_%d" % self.closure.index(closureSet)]["EOF"] = ["Accepted"]
+        closureSet = self.canonical[self.states[(0, self.grammar['S'])]]
+        self.table["I_%d" % self.canonical.index(closureSet)]["EOF"] = ["Accepted"]
         if (['e'] in self.grammar[self.grammar['S']]): self.table["I_0"]["EOF"] = ["Accepted"]
 
         # RULE: goto(state, symbol) [symbol = terminals U nonTerminals]
         for state, symbol in sorted(self.states):
             index = "I_%d" % state
-            table[index][symbol] = [("e" if symbol in terminals else "") + str(self.states[(state, symbol)])]
+            self.table[index][symbol] = [("e" if symbol in self.terminals else "") + str(self.states[(state, symbol)])]
 
         # RULE: A = alpha .
-        for i in range(len(self.closure)):
+        for i in range(len(self.canonical)):
             index = "I_%d" % i
-            for dot in production in closure[i]:
+            for dot, production in self.canonical[i]:
                 n, production = production[0], production[2]
                 if (n == "S'"): continue
                 if (dot >= len(production)):
                     for f in self.grammar_follow[n]:
-                        self.table[index][f] = ["r%d" % grammar[n].index([*production]), n]
+                        self.table[index][f] = ["r%d" % self.grammar[n].index([*production]), n]
 
     def analyse(self):
         self.buildCanonical()
+        self.buildSLRTable()
         pass
