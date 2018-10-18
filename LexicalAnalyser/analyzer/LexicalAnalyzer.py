@@ -1,8 +1,8 @@
-from exception.CodeNotFoundError import CodeNotFoundError
-from model import TokenCategory
-from model.Position import TokenPosition
-from model.Token import Token
-from model.TokenCategory import TokenCategory
+from LexicalAnalyser.exception.CodeNotFoundError import CodeNotFoundError
+from LexicalAnalyser.model import TokenCategory
+from LexicalAnalyser.model.Position import TokenPosition
+from LexicalAnalyser.model.Token import Token
+from LexicalAnalyser.model.TokenCategory import TokenCategory
 
 
 class LexicalAnalyzer:

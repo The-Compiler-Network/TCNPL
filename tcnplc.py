@@ -1,6 +1,7 @@
 import sys
 from LexicalAnalyser.analyzer.LexicalAnalyzer import LexicalAnalyzer
 from SyntacticAnalyser.analyser.SyntacticAnalyser import SyntacticAnalyser
+from SyntacticAnalyser.analyser.SLRParser import SLRParser
 
 lexicalAnalyser = LexicalAnalyzer(sys.argv[1])
 tokens = []
@@ -12,6 +13,6 @@ while True:
     tokens += [token]
     # print(token)
 
-syntacticAnalyser = SyntacticAnalyser(tokens, sys.argv[2])
-syntacticAnalyser.analyse()
+syntacticAnalyser = SLRParser(tokens, sys.argv[2])
+# syntacticAnalyser.analyse()
 print(syntacticAnalyser)

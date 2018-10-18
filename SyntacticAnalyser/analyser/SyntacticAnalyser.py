@@ -1,4 +1,4 @@
-from model.Token import Token
+from LexicalAnalyser.model.Token import Token
 
 
 class SyntacticAnalyser:
