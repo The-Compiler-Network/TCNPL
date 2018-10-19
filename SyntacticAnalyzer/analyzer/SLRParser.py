@@ -123,7 +123,7 @@ class SLRParser:
             if (element in self.non_terminals):
                 insideEpi = False
                 for productions in self.grammar[element]:
-                    firstMinusEpi = first(productions, visited)
+                    firstMinusEpi = self.first(productions, visited)
                     firstSet.update(firstMinusEpi)
                     if ('e' in firstMinusEpi):
                         insideEpi = True
