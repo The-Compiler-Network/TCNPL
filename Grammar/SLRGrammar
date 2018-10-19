@@ -1,30 +1,37 @@
-DeclFuncOpt
-DeclFuncOpt = 'entryPoint' DeclFunc | DeclFunc
-DeclFunc = 'function' 'id' 'opParen' 'clParen' 'isType' Type Body | 'function' 'id' 'opParen' ParamDeclList 'clParen' 'isType' Type Body | 'function' 'id' 'opParen' 'clParen' Body | 'function' 'id' 'opParen' ParamDeclList 'clParen' Body
+Code
+Code = DeclFuncOpt Code | DeclFuncOpt
 
-ParamDeclList = 'id' 'isType' Type 'comma' ParamDeclList | 'id' 'isType' Type
+DeclFuncOpt = 'entryPoint' DeclFunc | DeclFunc
+DeclFunc = 'function' 'id' 'opParen' 'clParen' 'isType' Type Body | 'function' 'id' 'opParen' DeclVars 'clParen' 'isType' Type Body | 'function' 'id' 'opParen' 'clParen' Body | 'function' 'id' 'opParen' DeclVars 'clParen' Body
+
+DeclVars = IdsList 'isType' Type 'comma' DeclVars | IdsList 'isType' Type
 ParamList = Literal 'comma' ParamList | Literal
 
-Literal = 'bool' | 'int' | 'real' | 'scynot' | 'char' | 'string'
+IdsList = 'id' 'comma' IdsList | 'id'
+
+Literal = 'bool' | 'int' | 'real' | 'scynot' | 'char' | 'string' | Func | 'id'
 
 Type = 'typeBool' | 'typeInt' | 'typeReal' | 'typeChar' | 'typeString' | 'typeArray'
 
 Body = 'opBraces' Statements 'clBraces' | 'opBraces' 'clBraces'
 
 Statements = Statement Statements | Statement
-Statement = Func | 'returnFun' Literal | If
+Statement = Func | 'returnFun' Literal | 'returnFun' | If | DeclVars | Attrib
+
+Attrib = 'id' 'attrib' Literal | 'id' 'attrib' AritExp
 
 If = 'ifSel' 'opParen' BoolExp 'clParen' Body | 'ifSel' 'opParen' BoolExp 'clParen' Body ElIf
 ElIfAux = 'elseSel' 'ifSel' ElIf | 'elifSel' ElIf
 ElIf = Body 'elseSel' Body | Body
 
 BoolExp = BoolExp logicOr BoolAnd | BoolFac
-BoolAnd = BoolAnd logicAnd BoolFac
-BoolFac = AritExp 'relational' ArtiExp | AritExp | 'opParen' BoolExp 'clParen'
+BoolAnd = BoolAnd logicAnd BoolFac | BoolFac
+BoolFac = AritExp 'relational' AritExp | 'opParen' BoolExp 'clParen' | 'id' | 'int' | 'char' | 'bool'
 
 AritExp = AritExp 'plus' AritMult | AritExp 'minus' AritMult | AritFac
-AritMult = AritMult 'mult' AritPow
-AritPow = AritFac 'exp' AritPow
-AritFac = 'int' | 'real' | 'scynot' | 'char' | 'bool' | 'opParen' 'AritExp' 'clParen'
+AritMult = AritMult 'mult' AritPow | AritFac
+AritPow = AritFac 'exp' AritPow | AritFac
+AritFac = 'id' | 'int' | 'real' | 'scynot' | 'char' | 'bool' | 'opParen' 'AritExp' 'clParen'
 
-Func = 'id' 'opParen' ParamList 'clParen'
+Func = 'id' 'opParen' ParamList 'clParen' | While
+While = 'id' 'whileLoop' 'opParen' BoolExp 'clParen' Body

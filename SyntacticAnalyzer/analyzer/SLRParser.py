@@ -1,5 +1,6 @@
 from LexicalAnalyzer.model.Token import Token
 from LexicalAnalyzer.analyzer.LexicalAnalyzer import LexicalAnalyzer
+TABLE = False
 
 class SLRParser:
     token = None
@@ -59,13 +60,14 @@ class SLRParser:
         #     string += "I_%d = " % i + str(state) + '\n'
         # string += '\n'
 
-        string += "SLR Table:\n"
-        columns = sorted(self.terminals) + ["EOF"] + sorted(self.non_terminals)
-        string += " "*5 + "|" + " | ".join([c.center(14, ' ') for c in columns]) + '\n'
-        for i in range(len(self.table)):
-            index = "I_%d" % i
-            string += str(index).center(5, ' ') + "|" + " | ".join([(" ".join(self.table[index][c])).center(14, ' ') for c in columns]) + '\n'
-        string += '\n'
+        if (TABLE):
+            string += "SLR Table:\n"
+            columns = sorted(self.terminals) + ["EOF"] + sorted(self.non_terminals)
+            string += " "*5 + "|" + " | ".join([c.center(14, ' ') for c in columns]) + '\n'
+            for i in range(len(self.table)):
+                index = "I_%d" % i
+                string += str(index).center(5, ' ') + "|" + " | ".join([(" ".join(self.table[index][c])).center(14, ' ') for c in columns]) + '\n'
+            string += '\n'
 
         string += "Stack:\n"
         for node in self.stack_history:
