@@ -1,9 +1,25 @@
-DeclFunc
-DeclFunc = 'entryPoint' 'function' 'id' 'opParen' 'clParen' 'isType' Type Body | 'function' 'id' 'opParen' 'clParen' 'isType' Type Body
-Type = 'typeBool' | 'typeInt' | 'typeReal' | 'typeChar' | 'typeString' | 'typeArray'
-Body = 'opBraces' Statements 'clBraces' | 'opBraces' 'clBraces'
-Statements = Statement Statements | Statement
-Statement = Func | 'returnFun' Literal
-Literal = 'bool' | 'int' | 'real' | 'scynot' | 'char' | 'string'
-Func = 'id' 'opParen' ParamList 'clParen'
+DeclFuncOpt
+DeclFuncOpt = 'entryPoint' DeclFunc | DeclFunc
+DeclFunc = 'function' 'id' 'opParen' 'clParen' 'isType' Type Body | 'function' 'id' 'opParen' ParamDeclList 'clParen' 'isType' Type Body
+
+ParamDeclList = 'id' 'isType' Type 'comma' ParamDeclList | 'id' 'isType' Type
 ParamList = Literal 'comma' ParamList | Literal
+
+Literal = 'bool' | 'int' | 'real' | 'scynot' | 'char' | 'string'
+
+Type = 'typeBool' | 'typeInt' | 'typeReal' | 'typeChar' | 'typeString' | 'typeArray'
+
+Body = 'opBraces' Statements 'clBraces' | 'opBraces' 'clBraces'
+
+Statements = Statement Statements | Statement
+Statement = Func | 'returnFun' Literal | If
+
+If = 'if' 'opParen' BoolExp 'clParen' Body | 'if' 'opParen' BoolExp 'clParen' Body ElIf
+ElIfAux = 'else' 'if' ElIf | 'elif' ElIf
+ElIf = Body 'else' Body | Body
+
+BoolExp =
+
+BoolFac = AritExp 'relational' ArtiExp | 'bool'
+
+Func = 'id' 'opParen' ParamList 'clParen'

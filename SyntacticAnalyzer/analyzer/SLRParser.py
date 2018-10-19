@@ -112,6 +112,7 @@ class SLRParser:
                     if (element[0] == '\'' and element != '\'e\''): self.terminals.add(element)
                 self.grammar[left] += [elements]
             line = grammar_file.readline()
+            while (line == '\n'): line = grammar_file.readline()
 
     def first(self, production, visited):
         if (production == ['e']): return ['e']
