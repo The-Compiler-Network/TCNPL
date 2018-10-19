@@ -16,17 +16,18 @@ class SLRParser:
     treePointer = 0
     stack_history = []
     lexicalAnalyzer = None
+    verdict = False
 
     def __init__(self, lexicalAnalyzer, grammar_path):
         self.lexicalAnalyzer = lexicalAnalyzer
-        self.next_token()
         self.tokens = []
+        self.next_token()
         try:
             self.read_grammar(open(grammar_path, 'r', encoding="utf-8"))
             for n in self.non_terminals:
                 self.grammar_follow[n] = sorted(self.follow(n, set()))
         except Exception as e:
-            print("File couldn't be opened", e)
+            print(e)
             pass
 
     def __str__(self):
@@ -60,10 +61,10 @@ class SLRParser:
 
         string += "SLR Table:\n"
         columns = sorted(self.terminals) + ["EOF"] + sorted(self.non_terminals)
-        string += " "*5 + "|" + " | ".join([c.center(10, ' ') for c in columns]) + '\n'
+        string += " "*5 + "|" + " | ".join([c.center(14, ' ') for c in columns]) + '\n'
         for i in range(len(self.table)):
             index = "I_%d" % i
-            string += str(index).center(5, ' ') + "|" + " | ".join([(" ".join(self.table[index][c])).center(10, ' ') for c in columns]) + '\n'
+            string += str(index).center(5, ' ') + "|" + " | ".join([(" ".join(self.table[index][c])).center(14, ' ') for c in columns]) + '\n'
         string += '\n'
 
         string += "Stack:\n"
@@ -71,9 +72,12 @@ class SLRParser:
             string += str(node) + '\n'
         string += '\n'
 
-        if self.tree:
+        if self.verdict:
             string += "Tree:\n"
             string += self.tree_to_string()
+
+        string += "Verdict: " + str(self.verdict) + '\n'
+
         return string
 
     def tree_to_string(self):
@@ -235,6 +239,7 @@ class SLRParser:
         self.codePointer += 1
         prev = (self.token.category.name, self.token.value) if self.token else None
         self.token = self.lexicalAnalyzer.next_token()
+        self.tokens += [self.token]
         return(prev)
 
     def parse(self):
@@ -246,8 +251,8 @@ class SLRParser:
             state, symbol = stack[len(stack) - 1]
             action = self.table["I_%d" % state][self.actual_token()]
 
-            if (action[0] == "Error"): return(self.codePointer - 1)
-            if (action[0] == "Accepted"): return(self.codePointer)
+            if (action[0] == "Error"): return(False)
+            if (action[0] == "Accepted"): return(True)
 
             if (action[0][0] == 'e'): # stacks
                 stack += [[int(action[0][1:]), self.next_token()]]
@@ -266,5 +271,5 @@ class SLRParser:
     def analyse(self):
         self.buildCanonical()
         self.buildSLRTable()
-        self.parse()
+        self.verdict = self.parse()
         pass

@@ -1,8 +1,9 @@
 DeclFunc
-DeclFunc = 'entryPoint' 'function' 'id' 'opParen' 'clParen' 'is' Type Body | 'function' 'id' 'opParen' 'clParen' 'is' Type Body
+DeclFunc = 'entryPoint' 'function' 'id' 'opParen' 'clParen' 'isType' Type Body | 'function' 'id' 'opParen' 'clParen' 'isType' Type Body
 Type = 'typeBool' | 'typeInt' | 'typeReal' | 'typeChar' | 'typeString' | 'typeArray'
-Body = 'opBraces' Statement 'clBraces'
+Body = 'opBraces' Statements 'clBraces' | 'opBraces' 'clBraces'
+Statements = Statement Statements | Statement
 Statement = Func | 'returnFun' Literal
-Literal = 'bool' | 'int' | 'real' | 'scynot' | 'char' | string
+Literal = 'bool' | 'int' | 'real' | 'scynot' | 'char' | 'string'
 Func = 'id' 'opParen' ParamList 'clParen'
-ParamList = Literal ',' ParamList | Literal
+ParamList = Literal 'comma' ParamList | Literal
