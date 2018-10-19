@@ -11,7 +11,8 @@ IdsList = 'id' 'comma' IdsList | 'id'
 
 Literal = 'bool' | 'int' | 'real' | 'scynot' | 'char' | 'string' | Func | 'id'
 
-Type = 'typeBool' | 'typeInt' | 'typeReal' | 'typeChar' | 'typeString' | 'typeArray'
+Type = 'typeBool' | 'typeInt' | 'typeReal' | 'typeChar' | 'typeString' | TypeArray
+TypeArray = 'typeArray' 'opBrackets' 'clBrackets' 'of' Type | 'typeArray' 'opBrackets' AritExp 'clBrackets' 'of' Type
 
 Body = 'opBraces' Statements 'clBraces' | 'opBraces' 'clBraces'
 
