@@ -7,7 +7,7 @@ function shellSort(size is int, arr is array[] of int) {
             temp, j is int
             temp = arr[i]
             repeat while (j >= h && arr[j - h] > temp) {
-                arr[j] = a[j - h]
+                arr[j] = arr[j - h]
                 j = j - h
             }
             arr[j] = temp

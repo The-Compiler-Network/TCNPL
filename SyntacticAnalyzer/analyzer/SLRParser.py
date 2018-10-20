@@ -1,6 +1,6 @@
 from LexicalAnalyzer.model.Token import Token
 from LexicalAnalyzer.analyzer.LexicalAnalyzer import LexicalAnalyzer
-TABLE = False
+TABLE = True
 
 class SLRParser:
     token = None

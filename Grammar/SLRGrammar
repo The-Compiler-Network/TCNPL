@@ -9,30 +9,33 @@ ParamList = Literal 'comma' ParamList | Literal
 
 IdsList = 'id' 'comma' IdsList | 'id'
 
-Literal = 'bool' | 'int' | 'real' | 'scynot' | 'char' | 'string' | Func | 'id'
+Literal = 'bool' | 'int' | 'real' | 'scynot' | 'char' | 'string' | Func | 'id' | Array
 
 Type = 'typeBool' | 'typeInt' | 'typeReal' | 'typeChar' | 'typeString' | TypeArray
 TypeArray = 'typeArray' 'opBrackets' 'clBrackets' 'of' Type | 'typeArray' 'opBrackets' AritExp 'clBrackets' 'of' Type
+Array = 'id' ArrayPos
+ArrayPos = 'opBrackets' AritExp 'clBrackets' ArrayPos | 'opBrackets' AritExp 'clBrackets'
 
 Body = 'opBraces' Statements 'clBraces' | 'opBraces' 'clBraces'
 
 Statements = Statement Statements | Statement
-Statement = Func | 'returnFun' Literal | 'returnFun' | If | DeclVars | Attrib
+Statement = Func | 'returnFun' Literal | 'returnFun' | If | Loop | DeclVars | Attrib
 
-Attrib = 'id' 'attrib' Literal | 'id' 'attrib' AritExp
+Attrib = LeftAttrib 'attrib' Literal | LeftAttrib 'attrib' AritExp
+LeftAttrib = 'id' | Array
 
 If = 'ifSel' 'opParen' BoolExp 'clParen' Body | 'ifSel' 'opParen' BoolExp 'clParen' Body ElIf
 ElIfAux = 'elseSel' 'ifSel' ElIf | 'elifSel' ElIf
 ElIf = Body 'elseSel' Body | Body
 
-BoolExp = BoolExp logicOr BoolAnd | BoolFac
-BoolAnd = BoolAnd logicAnd BoolFac | BoolFac
+BoolExp = BoolExp 'logicOr' BoolAnd | BoolAnd
+BoolAnd = BoolAnd 'logicAnd' BoolFac | BoolFac
 BoolFac = AritExp 'relational' AritExp | 'opParen' BoolExp 'clParen' | 'id' | 'int' | 'char' | 'bool'
 
-AritExp = AritExp 'plus' AritMult | AritExp 'minus' AritMult | AritFac
-AritMult = AritMult 'mult' AritPow | AritFac
+AritExp = AritExp 'plus' AritMult | AritExp 'minus' AritMult | AritMult
+AritMult = AritMult 'mult' AritPow | AritPow
 AritPow = AritFac 'exp' AritPow | AritFac
-AritFac = 'id' | 'int' | 'real' | 'scynot' | 'char' | 'bool' | 'opParen' 'AritExp' 'clParen'
+AritFac = 'id' | 'int' | 'real' | 'scynot' | 'char' | 'bool' | Func | Array | 'opParen' AritExp 'clParen'
 
-Func = 'id' 'opParen' ParamList 'clParen' | While
-While = 'id' 'whileLoop' 'opParen' BoolExp 'clParen' Body
+Func = 'id' 'opParen' ParamList 'clParen'
+Loop = 'repeat' 'whileLoop' 'opParen' BoolExp 'clParen' Body | 'repeat' 'opParen' 'id' 'attrib' AritExp 'to' AritExp 'clParen' Body

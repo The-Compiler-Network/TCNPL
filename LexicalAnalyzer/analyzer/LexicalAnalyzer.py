@@ -27,7 +27,7 @@ class LexicalAnalyzer:
                          "array": TokenCategory.typeArray, "to": TokenCategory.to, "as": TokenCategory.asCast,
                          "is": TokenCategory.isType, "while": TokenCategory.whileLoop, "if": TokenCategory.ifSel,
                          "elif": TokenCategory.elifSel, "else": TokenCategory.elseSel,
-                         "function": TokenCategory.function,
+                         "function": TokenCategory.function, "of": TokenCategory.of, "repeat": TokenCategory.repeat,
                          "return": TokenCategory.returnFun, "@isEntryPoint": TokenCategory.entryPoint}
     file = None
     line = None
