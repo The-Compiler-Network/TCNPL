@@ -6,8 +6,8 @@ class TokenCategory(Enum):
 	string, repeat, whileLoop, to, at, ifSel, \
 	elifSel, elseSel, opParen, clParen, function, returnFun, \
 	entryPoint, opBraces, clBraces, opBrackets, clBrackets, \
-	unary,  exp, mult, plus, minus, bitShift, relational, eqOrDiff,\
-	bitAnd, bitOr, logicAnd, logicOr, attrib, comma, unknown = list(range(47))
+	unary,  exp, mult, plus, minus, bitShift, relational, eqOrDiff, \
+	bitXor, bitAnd, bitOr, logicAnd, logicOr, attrib, comma, unknown = list(range(48))
 
 	def __str__(self):
 		return "%04d, %10s" % (self.value, self.name)

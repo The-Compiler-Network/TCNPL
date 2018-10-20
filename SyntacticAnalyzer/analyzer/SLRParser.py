@@ -282,5 +282,5 @@ class SLRParser:
     def analyse(self):
         self.buildCanonical()
         self.buildSLRTable()
-        # self.verdict = self.parse()
+        self.verdict = self.parse()
         pass

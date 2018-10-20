@@ -15,7 +15,7 @@ class LexicalAnalyzer:
                   "<>": TokenCategory.unknown,
                   "><": TokenCategory.unknown,
                   '<': TokenCategory.relational, '>': TokenCategory.relational, "<=": TokenCategory.relational,
-                  ">=": TokenCategory.relational, "==": TokenCategory.eqOrDiff, "!=": TokenCategory.eqOrDiff,
+                  ">=": TokenCategory.relational, "==": TokenCategory.eqOrDiff, "!=": TokenCategory.eqOrDiff, '^': TokenCategory.bitXor,
                   '&': TokenCategory.bitAnd, '|': TokenCategory.bitOr, "&&": TokenCategory.logicAnd,
                   "||": TokenCategory.logicOr, "&|": TokenCategory.unknown, "|&": TokenCategory.unknown,
                   '=': TokenCategory.attrib, ',': TokenCategory.comma, '"': None, ' ': None, '\t': None}

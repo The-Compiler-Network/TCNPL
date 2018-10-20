@@ -29,13 +29,18 @@ If = 'ifSel' 'opParen' Expr 'clParen' Body | 'ifSel' 'opParen' Expr 'clParen' Bo
 ElIfAux = 'elseSel' Body | 'elifSel' ElIf
 ElIf = Body ElIfAux | Body
 
-Expr = Expr 'relational' ExprOr | ExprOr
-ExprOr = ExprOr 'logicOr' ExprAnd | ExprAnd
-ExprAnd = ExprAnd 'logicAnd' ExprAdd | ExprAdd
+Expr = Expr 'logicOr' ExprAnd | ExprAnd
+ExprAnd = ExprAnd 'logicAnd' ExprBor | ExprBor
+ExprBor = ExprBor 'bitOr' ExprBxor | ExprBxor
+ExprBxor = ExprBxor 'bitXor' ExprBand | ExprBand
+ExprBand = ExprBand 'bitAnd' ExprEq | ExprEq
+ExprEq = ExprEq 'eqOrDiff' ExprRel | ExprRel
+ExprRel = ExprRel 'relational' ExprShift | ExprShift
+ExprShift = ExprShift 'bitShift' ExprAdd | ExprAdd
 ExprAdd = ExprAdd 'plus' ExprMult | ExprAdd 'minus' ExprMult | ExprMult
 ExprMult = ExprMult 'mult' ExprPow | ExprPow
 ExprPow = ExprPow 'exp' ExprFac | ExprFac
-ExprFac = Value | 'opParen' Expr 'clParen'
+ExprFac = Value | 'opParen' Expr 'clParen' | 'minus' Value | 'unary' Value | Value 'as' Type
 
 FuncCall = 'id' 'opParen' ParamList 'clParen'
 Loop = 'repeat' 'whileLoop' 'opParen' Expr 'clParen' Body | 'repeat' 'opParen' 'id' 'attrib' Expr 'to' Expr 'clParen' Body
