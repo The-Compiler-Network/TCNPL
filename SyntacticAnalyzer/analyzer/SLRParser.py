@@ -18,6 +18,7 @@ class SLRParser:
     stack_history = []
     lexicalAnalyzer = None
     verdict = False
+    ambiguity = []
 
     def __init__(self, lexicalAnalyzer, grammar_path):
         self.lexicalAnalyzer = lexicalAnalyzer
@@ -28,7 +29,7 @@ class SLRParser:
             for n in self.non_terminals:
                 self.grammar_follow[n] = sorted(self.follow(n, set()))
         except Exception as e:
-            print(e)
+            print(e, self.grammar)
             pass
 
     def __str__(self):
@@ -37,11 +38,11 @@ class SLRParser:
             string += str(token) + "\n"
         string += '\n'
 
-        string += "Follow:\n"
-        for n in self.non_terminals:
-            # print(n, self.grammar_follow)
-            string += "follow(%s) = " % n + str(self.grammar_follow[n]) + '\n'
-        string += '\n'
+        if self.ambiguity:
+            string += "Ambiguity:\n"
+            for ambiguity in self.ambiguity:
+                string += str(ambiguity) + '\n'
+            string += '\n'
 
         string += "Grammar:\n"
         for rule in self.grammar:
@@ -53,6 +54,11 @@ class SLRParser:
             else:
                 string += self.grammar[rule]
             string += '\n'
+        string += '\n'
+
+        string += "Follow:\n"
+        for n in self.non_terminals:
+            string += "follow(%s) = " % n + str(self.grammar_follow[n]) + '\n'
         string += '\n'
 
         # string += "Canonical:\n"
@@ -106,7 +112,7 @@ class SLRParser:
         while line:
             left, right = line.split('=')
             left = left.strip(' ')
-            self.grammar[left] = []
+            if left not in self.grammar: self.grammar[left] = []
             self.non_terminals.add(left)
             for production in right.split('|'):
                 elements = production.split()
@@ -223,7 +229,7 @@ class SLRParser:
         # RULE: goto(state, symbol) [symbol = terminals U nonTerminals]
         for state, symbol in sorted(self.states):
             index = "I_%d" % state
-            if (self.table[index][symbol] != ["Error"]): print("Duplication on", index, symbol)
+            if (self.table[index][symbol] != ["Error"]): self.ambiguity += ["Duplication on %s %s" % (str(index), str(symbol))]
             self.table[index][symbol] = [("e" if symbol in self.terminals else "") + str(self.states[(state, symbol)])]
 
         # RULE: A = alpha .
@@ -234,7 +240,7 @@ class SLRParser:
                 if (n == "S'"): continue
                 if (dot >= len(production)):
                     for f in self.grammar_follow[n]:
-                        if (self.table[index][f] != ["Error"]): print("Duplication on", index, f, "from", self.table[index][f], "to", "r%d" % self.grammar[n].index([*production]), production, n)
+                        if (self.table[index][f] != ["Error"]): self.ambiguity += ["Duplication on %s %s from %s to r%d %s %s" % (str(index), str(f), str(self.table[index][f]), self.grammar[n].index([*production]), str(production), str(n))]
                         self.table[index][f] = ["r%d" % self.grammar[n].index([*production]), n]
 
     def actual_token(self):
@@ -244,7 +250,7 @@ class SLRParser:
         self.codePointer += 1
         prev = (self.token.category.name, self.token.value) if self.token else None
         self.token = self.lexicalAnalyzer.next_token()
-        self.tokens += [self.token]
+        if self.token is not None: self.tokens += [self.token]
         return(prev)
 
     def parse(self):
@@ -276,5 +282,5 @@ class SLRParser:
     def analyse(self):
         self.buildCanonical()
         self.buildSLRTable()
-        self.verdict = self.parse()
+        # self.verdict = self.parse()
         pass

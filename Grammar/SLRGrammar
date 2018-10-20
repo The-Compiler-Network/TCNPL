@@ -10,7 +10,7 @@ ParamList = Value 'comma' ParamList | Value
 IdsList = 'id' 'comma' IdsList | 'id'
 
 Literal = 'bool' | 'int' | 'real' | 'scynot' | 'char' | 'string'
-Value = Literal | Func | Array | 'id'
+Value = Literal | FuncCall | Array | 'id'
 
 Type = 'typeBool' | 'typeInt' | 'typeReal' | 'typeChar' | 'typeString' | TypeArray
 TypeArray = 'typeArray' 'opBrackets' 'clBrackets' 'of' Type | 'typeArray' 'opBrackets' Expr 'clBrackets' 'of' Type
@@ -19,8 +19,8 @@ ArrayPos = 'opBrackets' Expr 'clBrackets' ArrayPos | 'opBrackets' Expr 'clBracke
 
 Body = 'opBraces' Statements 'clBraces' | 'opBraces' 'clBraces'
 
-Statements = Statement Statements | Statement
-Statement = Func | 'returnFun' Expr | 'returnFun' | If | Loop | DeclVars | Attrib
+Statements = Statement Statements | Statement | 'returnFun' Expr | 'returnFun'
+Statement = FuncCall | If | Loop | DeclVars | Attrib
 
 Attrib = LeftAttrib 'attrib' Expr
 LeftAttrib = 'id' | Array
@@ -30,12 +30,12 @@ ElIfAux = 'elseSel' Body | 'elifSel' ElIf
 ElIf = Body ElIfAux | Body
 
 Expr = Expr 'relational' ExprOr | ExprOr
-Expr = Expr 'logicOr' ExprAnd | ExprAnd
+ExprOr = ExprOr 'logicOr' ExprAnd | ExprAnd
 ExprAnd = ExprAnd 'logicAnd' ExprAdd | ExprAdd
 ExprAdd = ExprAdd 'plus' ExprMult | ExprAdd 'minus' ExprMult | ExprMult
 ExprMult = ExprMult 'mult' ExprPow | ExprPow
 ExprPow = ExprPow 'exp' ExprFac | ExprFac
 ExprFac = Value | 'opParen' Expr 'clParen'
 
-Func = 'id' 'opParen' ParamList 'clParen'
+FuncCall = 'id' 'opParen' ParamList 'clParen'
 Loop = 'repeat' 'whileLoop' 'opParen' Expr 'clParen' Body | 'repeat' 'opParen' 'id' 'attrib' Expr 'to' Expr 'clParen' Body
