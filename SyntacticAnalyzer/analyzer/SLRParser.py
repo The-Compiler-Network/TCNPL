@@ -223,6 +223,7 @@ class SLRParser:
         # RULE: goto(state, symbol) [symbol = terminals U nonTerminals]
         for state, symbol in sorted(self.states):
             index = "I_%d" % state
+            if (self.table[index][symbol] != ["Error"]): print("Duplication on", index, symbol)
             self.table[index][symbol] = [("e" if symbol in self.terminals else "") + str(self.states[(state, symbol)])]
 
         # RULE: A = alpha .
@@ -233,6 +234,7 @@ class SLRParser:
                 if (n == "S'"): continue
                 if (dot >= len(production)):
                     for f in self.grammar_follow[n]:
+                        if (self.table[index][f] != ["Error"]): print("Duplication on", index, f, "from", self.table[index][f], "to", "r%d" % self.grammar[n].index([*production]), production, n)
                         self.table[index][f] = ["r%d" % self.grammar[n].index([*production]), n]
 
     def actual_token(self):

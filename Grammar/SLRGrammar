@@ -5,37 +5,37 @@ DeclFuncOpt = 'entryPoint' DeclFunc | DeclFunc
 DeclFunc = 'function' 'id' 'opParen' 'clParen' 'isType' Type Body | 'function' 'id' 'opParen' DeclVars 'clParen' 'isType' Type Body | 'function' 'id' 'opParen' 'clParen' Body | 'function' 'id' 'opParen' DeclVars 'clParen' Body
 
 DeclVars = IdsList 'isType' Type 'comma' DeclVars | IdsList 'isType' Type
-ParamList = Literal 'comma' ParamList | Literal
+ParamList = Value 'comma' ParamList | Value
 
 IdsList = 'id' 'comma' IdsList | 'id'
 
-Literal = 'bool' | 'int' | 'real' | 'scynot' | 'char' | 'string' | Func | 'id' | Array
+Literal = 'bool' | 'int' | 'real' | 'scynot' | 'char' | 'string'
+Value = Literal | Func | Array | 'id'
 
 Type = 'typeBool' | 'typeInt' | 'typeReal' | 'typeChar' | 'typeString' | TypeArray
-TypeArray = 'typeArray' 'opBrackets' 'clBrackets' 'of' Type | 'typeArray' 'opBrackets' AritExp 'clBrackets' 'of' Type
+TypeArray = 'typeArray' 'opBrackets' 'clBrackets' 'of' Type | 'typeArray' 'opBrackets' Expr 'clBrackets' 'of' Type
 Array = 'id' ArrayPos
-ArrayPos = 'opBrackets' AritExp 'clBrackets' ArrayPos | 'opBrackets' AritExp 'clBrackets'
+ArrayPos = 'opBrackets' Expr 'clBrackets' ArrayPos | 'opBrackets' Expr 'clBrackets'
 
 Body = 'opBraces' Statements 'clBraces' | 'opBraces' 'clBraces'
 
 Statements = Statement Statements | Statement
-Statement = Func | 'returnFun' Literal | 'returnFun' | If | Loop | DeclVars | Attrib
+Statement = Func | 'returnFun' Expr | 'returnFun' | If | Loop | DeclVars | Attrib
 
-Attrib = LeftAttrib 'attrib' Literal | LeftAttrib 'attrib' AritExp
+Attrib = LeftAttrib 'attrib' Expr
 LeftAttrib = 'id' | Array
 
-If = 'ifSel' 'opParen' BoolExp 'clParen' Body | 'ifSel' 'opParen' BoolExp 'clParen' Body ElIf
-ElIfAux = 'elseSel' 'ifSel' ElIf | 'elifSel' ElIf
-ElIf = Body 'elseSel' Body | Body
+If = 'ifSel' 'opParen' Expr 'clParen' Body | 'ifSel' 'opParen' Expr 'clParen' Body ElIfAux
+ElIfAux = 'elseSel' Body | 'elifSel' ElIf
+ElIf = Body ElIfAux | Body
 
-BoolExp = BoolExp 'logicOr' BoolAnd | BoolAnd
-BoolAnd = BoolAnd 'logicAnd' BoolFac | BoolFac
-BoolFac = AritExp 'relational' AritExp | 'opParen' BoolExp 'clParen' | 'id' | 'int' | 'char' | 'bool'
-
-AritExp = AritExp 'plus' AritMult | AritExp 'minus' AritMult | AritMult
-AritMult = AritMult 'mult' AritPow | AritPow
-AritPow = AritFac 'exp' AritPow | AritFac
-AritFac = 'id' | 'int' | 'real' | 'scynot' | 'char' | 'bool' | Func | Array | 'opParen' AritExp 'clParen'
+Expr = Expr 'relational' ExprOr | ExprOr
+Expr = Expr 'logicOr' ExprAnd | ExprAnd
+ExprAnd = ExprAnd 'logicAnd' ExprAdd | ExprAdd
+ExprAdd = ExprAdd 'plus' ExprMult | ExprAdd 'minus' ExprMult | ExprMult
+ExprMult = ExprMult 'mult' ExprPow | ExprPow
+ExprPow = ExprPow 'exp' ExprFac | ExprFac
+ExprFac = Value | 'opParen' Expr 'clParen'
 
 Func = 'id' 'opParen' ParamList 'clParen'
-Loop = 'repeat' 'whileLoop' 'opParen' BoolExp 'clParen' Body | 'repeat' 'opParen' 'id' 'attrib' AritExp 'to' AritExp 'clParen' Body
+Loop = 'repeat' 'whileLoop' 'opParen' Expr 'clParen' Body | 'repeat' 'opParen' 'id' 'attrib' Expr 'to' Expr 'clParen' Body
