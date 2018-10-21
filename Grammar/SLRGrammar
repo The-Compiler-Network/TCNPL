@@ -39,8 +39,10 @@ ExprRel = ExprRel 'relational' ExprShift | ExprShift
 ExprShift = ExprShift 'bitShift' ExprAdd | ExprAdd
 ExprAdd = ExprAdd 'plus' ExprMult | ExprAdd 'minus' ExprMult | ExprMult
 ExprMult = ExprMult 'mult' ExprPow | ExprPow
-ExprPow = ExprPow 'exp' ExprFac | ExprFac
-ExprFac = Value | 'opParen' Expr 'clParen' | 'minus' Value | 'unary' Value | Value 'as' Type
+ExprPow = ExprPow 'exp' ExprUnary | ExprUnary
+ExprUnary = 'minus' ExprCast | 'unary' ExprCast | ExprCast
+ExprCast = ExprFac 'as' Type | ExprFac
+ExprFac = Value | 'opParen' Expr 'clParen'
 
 FuncCall = 'id' 'opParen' ParamList 'clParen'
 Loop = 'repeat' 'whileLoop' 'opParen' Expr 'clParen' Body | 'repeat' 'opParen' 'id' 'attrib' Expr 'to' Expr 'clParen' Body
