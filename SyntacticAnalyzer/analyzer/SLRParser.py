@@ -33,7 +33,12 @@ class SLRParser:
             pass
 
     def __str__(self):
-        string = "Tokens:\n"
+        string = ""
+        if self.verdict:
+            string += "Tree:\n"
+            string += self.tree_to_string()
+
+        string += "Tokens:\n"
         for token in self.tokens:
             string += str(token) + "\n"
         string += '\n'
@@ -80,31 +85,51 @@ class SLRParser:
             string += str(node) + '\n'
         string += '\n'
 
-        if self.verdict:
-            string += "Tree:\n"
-            string += self.tree_to_string()
+        # if self.verdict:
+        #     string += "Tree:\n"
+        #     string += self.tree_to_string()
 
         string += "Verdict: " + str(self.verdict) + '\n'
 
         return string
 
     def tree_to_string(self):
-        self.tree += [[self.grammar['S']]]
-        self.tree.reverse()
-        self.treePointer = 0
-        newTree = []
-        self.tree_to_string_util(0, newTree)
-        tree_string = ""
-        for t in newTree:
-            tree_string += "\t"*t[0] + str(t[1]) + '\n'
+        self.tree = [[self.grammar['S']]] + self.tree
+        # print(self.tree)
+        self.treePointer, level_tree, level_pointer = 0, {}, {}
+        self.tree_to_level_tree(0, level_tree)
+        for l in sorted(level_tree):
+            level_tree[l].reverse()
+            level_pointer[l] = 0
+        new_tree = []
+        self.level_tree_to_tree(0, level_pointer, level_tree, new_tree)
+        self.tree, self.treePointer = new_tree, 0
+        tree_string = self.tree_to_string_util(0)
+        # for t in newTree:
+        #     tree_string += "\t"*t[0] + str(t[1]) + '\n'
         return(tree_string)
 
-    def tree_to_string_util(self, depth, newTree):
-        newTree += [[depth, self.tree[self.treePointer]]]
+    def tree_to_level_tree(self, depth, level_tree):
+        if depth not in level_tree: level_tree[depth] = []
+        level_tree[depth] += [self.tree[self.treePointer]]
         for element in self.tree[self.treePointer]:
             if (element in self.non_terminals):
                 self.treePointer += 1
-                self.tree_to_string_util(depth + 1, newTree)
+                self.tree_to_level_tree(depth + 1, level_tree)
+    def level_tree_to_tree(self, depth, level_pointer, level_tree, new_tree):
+        if (depth not in level_tree or level_pointer[depth] >= len(level_tree[depth])): return
+        new_tree += [level_tree[depth][level_pointer[depth]]]
+        for element in level_tree[depth][level_pointer[depth]]:
+            if (element in self.non_terminals):
+                self.level_tree_to_tree(depth + 1, level_pointer, level_tree, new_tree)
+        level_pointer[depth] += 1
+    def tree_to_string_util(self, depth):
+        tree_string = '\t'*depth + str(self.tree[self.treePointer]) + '\n'
+        for element in self.tree[self.treePointer]:
+            if (element in self.non_terminals):
+                self.treePointer += 1
+                tree_string += self.tree_to_string_util(depth + 1)
+        return(tree_string)
 
     def read_grammar(self, grammar_file):
         self.grammar['S'] = grammar_file.readline().strip('\n')
@@ -273,8 +298,8 @@ class SLRParser:
                 now = []
                 for i in range(len(production)):
                     state, symbol = stack.pop(len(stack) - 1)
-                    now += [symbol]
-                self.tree += [now]
+                    now = [symbol] + now
+                self.tree = [now] + self.tree
                 state, symbol = stack[len(stack) - 1]
                 trasition = int(self.table["I_%d" % state][n][0])
                 stack += [[trasition, n]]

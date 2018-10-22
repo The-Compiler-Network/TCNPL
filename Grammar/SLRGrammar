@@ -2,10 +2,11 @@ Code
 Code = DeclFuncOpt Code | DeclFuncOpt
 
 DeclFuncOpt = 'entryPoint' DeclFunc | DeclFunc
-DeclFunc = 'function' 'id' 'opParen' 'clParen' 'isType' Type Body | 'function' 'id' 'opParen' DeclVars 'clParen' 'isType' Type Body | 'function' 'id' 'opParen' 'clParen' Body | 'function' 'id' 'opParen' DeclVars 'clParen' Body
+DeclFunc = 'function' 'id' 'opParen' 'clParen' 'isType' Type Body | 'function' 'id' 'opParen' FuncDeclVar 'clParen' 'isType' Type Body | 'function' 'id' 'opParen' 'clParen' Body | 'function' 'id' 'opParen' FuncDeclVar 'clParen' Body
 
-DeclVars = IdsList 'isType' Type 'comma' DeclVars | IdsList 'isType' Type
-ParamList = Value 'comma' ParamList | Value
+FuncDeclVar = IdsList 'isType' Type 'comma' FuncDeclVar | IdsList 'isType' Type
+DeclVars = IdsList 'isType' Type
+ParamList = Expr 'comma' ParamList | Expr
 
 IdsList = 'id' 'comma' IdsList | 'id'
 
@@ -17,16 +18,17 @@ TypeArray = 'typeArray' 'opBrackets' 'clBrackets' 'of' Type | 'typeArray' 'opBra
 Array = 'id' ArrayPos
 ArrayPos = 'opBrackets' Expr 'clBrackets' ArrayPos | 'opBrackets' Expr 'clBrackets'
 
-Body = 'opBraces' Statements 'clBraces' | 'opBraces' 'clBraces'
+Body = 'opBraces' Lines 'clBraces' | 'opBraces' 'clBraces'
 
-Statements = Statement Statements | Statement | 'returnFun' Expr | 'returnFun'
-Statement = FuncCall | If | Loop | DeclVars | Attrib
+Lines = Line Lines | Line | 'returnFun' Expr | 'returnFun'
+Line = Statement 'comma' Line | Statement
+Statement = DeclVars | FuncCall | If | Loop | Attrib
 
 Attrib = LeftAttrib 'attrib' Expr
 LeftAttrib = 'id' | Array
 
 If = 'ifSel' 'opParen' Expr 'clParen' Body | 'ifSel' 'opParen' Expr 'clParen' Body ElIfAux
-ElIfAux = 'elseSel' Body | 'elifSel' ElIf
+ElIfAux = 'elseSel' Body | 'elseSel' If | 'elifSel' 'opParen' Expr 'clParen' ElIf
 ElIf = Body ElIfAux | Body
 
 Expr = Expr 'logicOr' ExprAnd | ExprAnd
@@ -39,8 +41,10 @@ ExprRel = ExprRel 'relational' ExprShift | ExprShift
 ExprShift = ExprShift 'bitShift' ExprAdd | ExprAdd
 ExprAdd = ExprAdd 'plus' ExprMult | ExprAdd 'minus' ExprMult | ExprMult
 ExprMult = ExprMult 'mult' ExprPow | ExprPow
-ExprPow = ExprPow 'exp' ExprFac | ExprFac
-ExprFac = Value | 'opParen' Expr 'clParen' | 'minus' Value | 'unary' Value | Value 'as' Type
+ExprPow = ExprPow 'exp' ExprUnary | ExprUnary
+ExprUnary = 'minus' ExprCast | 'unary' ExprCast | ExprCast
+ExprCast = ExprFac 'asCast' Type | ExprFac
+ExprFac = Value | 'opParen' Expr 'clParen'
 
-FuncCall = 'id' 'opParen' ParamList 'clParen'
+FuncCall = 'id' 'opParen' ParamList 'clParen' | 'id' 'opParen' 'clParen'
 Loop = 'repeat' 'whileLoop' 'opParen' Expr 'clParen' Body | 'repeat' 'opParen' 'id' 'attrib' Expr 'to' Expr 'clParen' Body
