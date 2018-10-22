@@ -34,9 +34,6 @@ class SLRParser:
 
     def __str__(self):
         string = ""
-        if self.verdict:
-            string += "Tree:\n"
-            string += self.tree_to_string()
 
         string += "Tokens:\n"
         for token in self.tokens:
@@ -85,9 +82,9 @@ class SLRParser:
             string += str(node) + '\n'
         string += '\n'
 
-        # if self.verdict:
-        #     string += "Tree:\n"
-        #     string += self.tree_to_string()
+        if self.verdict:
+            string += "Tree:\n"
+            string += self.tree_to_string()
 
         string += "Verdict: " + str(self.verdict) + '\n'
 
@@ -124,8 +121,9 @@ class SLRParser:
                 self.level_tree_to_tree(depth + 1, level_pointer, level_tree, new_tree)
         level_pointer[depth] += 1
     def tree_to_string_util(self, depth):
-        tree_string = '\t'*depth + str(self.tree[self.treePointer]) + '\n'
+        tree_string = ""
         for element in self.tree[self.treePointer]:
+            tree_string += '\t'*depth + str(element) + '\n'
             if (element in self.non_terminals):
                 self.treePointer += 1
                 tree_string += self.tree_to_string_util(depth + 1)
@@ -255,7 +253,7 @@ class SLRParser:
         for state, symbol in sorted(self.states):
             index = "I_%d" % state
             if (self.table[index][symbol] != ["Error"]): self.ambiguity += ["Duplication on %s %s" % (str(index), str(symbol))]
-            self.table[index][symbol] = [("e" if symbol in self.terminals else "") + str(self.states[(state, symbol)])]
+            self.table[index][symbol] = [("s" if symbol in self.terminals else "") + str(self.states[(state, symbol)])]
 
         # RULE: A = alpha .
         for i in range(len(self.canonical)):
@@ -290,7 +288,7 @@ class SLRParser:
             if (action[0] == "Error"): return(False)
             if (action[0] == "Accepted"): return(True)
 
-            if (action[0][0] == 'e'): # stacks
+            if (action[0][0] == 's'): # stacks
                 stack += [[int(action[0][1:]), self.next_token()]]
             elif (action[0][0] == 'r'): # redecuts
                 n = action[1] # gets non_terminal

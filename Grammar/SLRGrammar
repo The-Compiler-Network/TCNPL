@@ -47,4 +47,4 @@ ExprCast = ExprFac 'asCast' Type | ExprFac
 ExprFac = Value | 'opParen' Expr 'clParen'
 
 FuncCall = 'id' 'opParen' ParamList 'clParen' | 'id' 'opParen' 'clParen'
-Loop = 'repeat' 'whileLoop' 'opParen' Expr 'clParen' Body | 'repeat' 'opParen' 'id' 'attrib' Expr 'to' Expr 'clParen' Body
+Loop = 'repeat' 'whileLoop' 'opParen' Expr 'clParen' Body | 'repeat' Body 'whileLoop' 'opParen' Expr 'clParen' | 'repeat' 'opParen' 'id' 'attrib' Expr 'to' Expr 'clParen' Body
