@@ -1,6 +1,7 @@
 from LexicalAnalyzer.model.Token import Token
 from LexicalAnalyzer.analyzer.LexicalAnalyzer import LexicalAnalyzer
 TABLE = True
+LIVE = False
 
 class SLRParser:
     token = None
@@ -280,6 +281,7 @@ class SLRParser:
         self.codePointer = -1
         stack = [[0, ""]]
         while (stack):
+            if (LIVE): print(stack)
             self.stack_history += [stack.copy()]
 
             state, symbol = stack[len(stack) - 1]
