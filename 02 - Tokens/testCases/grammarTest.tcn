@@ -23,6 +23,9 @@ function a(b, c is int, d, e is real) is array[] of int {
   
   // Nice
   n is int, in("%int", n)
+  
+  // Unknown
+  // 1a
 
   return g
 }

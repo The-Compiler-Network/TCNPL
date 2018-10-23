@@ -1,7 +1,8 @@
 from LexicalAnalyzer.model.Token import Token
 from LexicalAnalyzer.analyzer.LexicalAnalyzer import LexicalAnalyzer
 TABLE = True
-LIVE = True
+LIVE = False
+ALCINO = True
 
 class SLRParser:
     token = None
@@ -275,6 +276,7 @@ class SLRParser:
         prev = (self.token.category.name, self.token.value) if self.token else None
         self.token = self.lexicalAnalyzer.next_token()
         if self.token is not None: self.tokens += [self.token]
+        if (ALCINO): print(self.token if self.token is not None else " "*8+"EOF")
         return(prev)
 
     def parse(self):
@@ -299,6 +301,7 @@ class SLRParser:
                 for i in range(len(production)):
                     state, symbol = stack.pop(len(stack) - 1)
                     now = [symbol] + now
+                if (ALCINO): print(" "*13, n, "=", now)
                 self.tree = [now] + self.tree
                 state, symbol = stack[len(stack) - 1]
                 trasition = int(self.table["I_%d" % state][n][0])
@@ -307,5 +310,8 @@ class SLRParser:
     def analyse(self):
         self.buildCanonical()
         self.buildSLRTable()
-        self.verdict = self.parse()
+        try:
+            self.verdict = self.parse()
+        except KeyError as e:
+            print("Syntatic Analysis failed because of unknown token:", e)
         pass
