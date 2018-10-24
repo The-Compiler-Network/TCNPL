@@ -158,7 +158,7 @@ class LexicalAnalyzer:
     def read_next_line(self):
         line = self.file.readline()
         if line:
-            print("%4d  " % self.current_line, line.strip('\n'), sep='')
+            print("%4d  " % (self.current_line + 1), line.strip('\n'), sep='')
             return line.strip('\n')
         self.file.close()
         raise EOFError

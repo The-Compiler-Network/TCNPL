@@ -15,7 +15,6 @@ class SLRParser:
     states = {}
     canonical = []
     table = {}
-    codePointer = 0
     treePointer = 0
     stack_history = []
     lexicalAnalyzer = None
@@ -247,7 +246,7 @@ class SLRParser:
         self.initTable()
 
         # RULE: S' = S .
-        closureSet = self.canonical[self.states[(0, self.grammar['S'])]]
+        closureSet = self.canonical[self.states[(0, self.grammar['S'])]] # goto(I_0, S)
         self.table["I_%d" % self.canonical.index(closureSet)]["EOF"] = ["Accepted"]
         if (['e'] in self.grammar[self.grammar['S']]): self.table["I_0"]["EOF"] = ["Accepted"]
 
@@ -272,15 +271,14 @@ class SLRParser:
         return('\'' + self.token.category.name + '\'' if self.token else "EOF")
 
     def next_token(self):
-        self.codePointer += 1
+        if (ALCINO):
+            if self.token is not None: print(self.token)
         prev = (self.token.category.name, self.token.value) if self.token else None
         self.token = self.lexicalAnalyzer.next_token()
         if self.token is not None: self.tokens += [self.token]
-        if (ALCINO): print(self.token if self.token is not None else " "*8+"EOF")
         return(prev)
 
     def parse(self):
-        self.codePointer = -1
         stack = [[0, ""]]
         while (stack):
             if (LIVE): print(stack)
