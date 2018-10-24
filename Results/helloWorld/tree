@@ -1,0 +1,61 @@
+Code
+	EntryPoint
+		('entryPoint', '@isEntryPoint')
+		DeclFunc
+			('function', 'function')
+			('id', 'helloWorld')
+			('opParen', '(')
+			('clParen', ')')
+			('isType', 'is')
+			Type
+				('typeInt', 'int')
+			Body
+				('opBraces', '{')
+				Lines
+					Line
+						Statement
+							FuncCall
+								('id', 'textOut')
+								('opParen', '(')
+								ParamList
+									Expr
+										ExprAnd
+											ExprBor
+												ExprBxor
+													ExprBand
+														ExprEq
+															ExprRel
+																ExprShift
+																	ExprAdd
+																		ExprMult
+																			ExprPow
+																				ExprUnary
+																					ExprCast
+																						ExprFac
+																							Value
+																								Literal
+																									('string', 'Alô mundo!')
+								('clParen', ')')
+					Lines
+						('returnFun', 'return')
+						Expr
+							ExprAnd
+								ExprBor
+									ExprBxor
+										ExprBand
+											ExprEq
+												ExprRel
+													ExprShift
+														ExprAdd
+															ExprMult
+																ExprPow
+																	ExprUnary
+																		ExprCast
+																			ExprFac
+																				Value
+																					Literal
+																						('int', '0')
+				('clBraces', '}')
+
+
+Verdict: Accepted

@@ -1,0 +1,15 @@
+        [0001, 0001] (0026, entryPoint) {@isEntryPoint}
+        [0002, 0001] (0024,   function) {function}
+        [0002, 0010] (0000,         id) {helloWorld}
+        [0002, 0020] (0022,    opParen) {(}
+        [0002, 0021] (0023,    clParen) {)}
+        [0002, 0023] (0008,     isType) {is}
+        [0002, 0026] (0002,    typeInt) {int}
+        [0002, 0030] (0027,   opBraces) {{}
+        [0003, 0005] (0000,         id) {textOut}
+        [0003, 0012] (0022,    opParen) {(}
+        [0003, 0013] (0014,     string) {Alô mundo!}
+        [0003, 0025] (0023,    clParen) {)}
+        [0004, 0005] (0025,  returnFun) {return}
+        [0004, 0012] (0011,        int) {0}
+        [0005, 0001] (0028,   clBraces) {}}

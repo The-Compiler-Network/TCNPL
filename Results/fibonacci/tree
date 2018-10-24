@@ -1,0 +1,511 @@
+Code
+	DeclFunc
+		('function', 'function')
+		('id', 'fibonacci')
+		('opParen', '(')
+		FuncDeclVar
+			IdsList
+				('id', 'limit')
+			('isType', 'is')
+			Type
+				('typeInt', 'int')
+		('clParen', ')')
+		Body
+			('opBraces', '{')
+			Lines
+				Line
+					Statement
+						If
+							('ifSel', 'if')
+							('opParen', '(')
+							Expr
+								ExprAnd
+									ExprBor
+										ExprBxor
+											ExprBand
+												ExprEq
+													ExprRel
+														ExprRel
+															ExprShift
+																ExprAdd
+																	ExprMult
+																		ExprPow
+																			ExprUnary
+																				ExprCast
+																					ExprFac
+																						Value
+																							('id', 'limit')
+														('relational', '<')
+														ExprShift
+															ExprAdd
+																ExprMult
+																	ExprPow
+																		ExprUnary
+																			ExprCast
+																				ExprFac
+																					Value
+																						Literal
+																							('int', '0')
+							('clParen', ')')
+							IfBody
+								Body
+									('opBraces', '{')
+									Lines
+										('returnFun', 'return')
+									('clBraces', '}')
+				Lines
+					Line
+						Statement
+							DeclVars
+								IdsList
+									('id', 'a')
+									('comma', ',')
+									IdsList
+										('id', 'b')
+										('comma', ',')
+										IdsList
+											('id', 'aux')
+								('isType', 'is')
+								Type
+									('typeInt', 'int')
+					Lines
+						Line
+							Statement
+								Attrib
+									LeftAttrib
+										('id', 'a')
+									('attrib', '=')
+									Expr
+										ExprAnd
+											ExprBor
+												ExprBxor
+													ExprBand
+														ExprEq
+															ExprRel
+																ExprShift
+																	ExprAdd
+																		ExprMult
+																			ExprPow
+																				ExprUnary
+																					ExprCast
+																						ExprFac
+																							Value
+																								Literal
+																									('int', '0')
+						Lines
+							Line
+								Statement
+									Attrib
+										LeftAttrib
+											('id', 'b')
+										('attrib', '=')
+										Expr
+											ExprAnd
+												ExprBor
+													ExprBxor
+														ExprBand
+															ExprEq
+																ExprRel
+																	ExprShift
+																		ExprAdd
+																			ExprMult
+																				ExprPow
+																					ExprUnary
+																						ExprCast
+																							ExprFac
+																								Value
+																									Literal
+																										('int', '1')
+							Lines
+								Line
+									Statement
+										FuncCall
+											('id', 'textOut')
+											('opParen', '(')
+											ParamList
+												Expr
+													ExprAnd
+														ExprBor
+															ExprBxor
+																ExprBand
+																	ExprEq
+																		ExprRel
+																			ExprShift
+																				ExprAdd
+																					ExprMult
+																						ExprPow
+																							ExprUnary
+																								ExprCast
+																									ExprFac
+																										Value
+																											FuncCall
+																												('id', 'format')
+																												('opParen', '(')
+																												ParamList
+																													Expr
+																														ExprAnd
+																															ExprBor
+																																ExprBxor
+																																	ExprBand
+																																		ExprEq
+																																			ExprRel
+																																				ExprShift
+																																					ExprAdd
+																																						ExprMult
+																																							ExprPow
+																																								ExprUnary
+																																									ExprCast
+																																										ExprFac
+																																											Value
+																																												Literal
+																																													('string', '%int')
+																													('comma', ',')
+																													ParamList
+																														Expr
+																															ExprAnd
+																																ExprBor
+																																	ExprBxor
+																																		ExprBand
+																																			ExprEq
+																																				ExprRel
+																																					ExprShift
+																																						ExprAdd
+																																							ExprMult
+																																								ExprPow
+																																									ExprUnary
+																																										ExprCast
+																																											ExprFac
+																																												Value
+																																													('id', 'a')
+																												('clParen', ')')
+											('clParen', ')')
+								Lines
+									Line
+										Statement
+											Loop
+												('repeat', 'repeat')
+												('whileLoop', 'while')
+												('opParen', '(')
+												Expr
+													ExprAnd
+														ExprBor
+															ExprBxor
+																ExprBand
+																	ExprEq
+																		ExprRel
+																			ExprRel
+																				ExprShift
+																					ExprAdd
+																						ExprMult
+																							ExprPow
+																								ExprUnary
+																									ExprCast
+																										ExprFac
+																											Value
+																												('id', 'a')
+																			('relational', '<=')
+																			ExprShift
+																				ExprAdd
+																					ExprMult
+																						ExprPow
+																							ExprUnary
+																								ExprCast
+																									ExprFac
+																										Value
+																											('id', 'limit')
+												('clParen', ')')
+												Body
+													('opBraces', '{')
+													Lines
+														Line
+															Statement
+																Attrib
+																	LeftAttrib
+																		('id', 'aux')
+																	('attrib', '=')
+																	Expr
+																		ExprAnd
+																			ExprBor
+																				ExprBxor
+																					ExprBand
+																						ExprEq
+																							ExprRel
+																								ExprShift
+																									ExprAdd
+																										ExprMult
+																											ExprPow
+																												ExprUnary
+																													ExprCast
+																														ExprFac
+																															Value
+																																('id', 'a')
+														Lines
+															Line
+																Statement
+																	Attrib
+																		LeftAttrib
+																			('id', 'a')
+																		('attrib', '=')
+																		Expr
+																			ExprAnd
+																				ExprBor
+																					ExprBxor
+																						ExprBand
+																							ExprEq
+																								ExprRel
+																									ExprShift
+																										ExprAdd
+																											ExprMult
+																												ExprPow
+																													ExprUnary
+																														ExprCast
+																															ExprFac
+																																Value
+																																	('id', 'b')
+															Lines
+																Line
+																	Statement
+																		Attrib
+																			LeftAttrib
+																				('id', 'b')
+																			('attrib', '=')
+																			Expr
+																				ExprAnd
+																					ExprBor
+																						ExprBxor
+																							ExprBand
+																								ExprEq
+																									ExprRel
+																										ExprShift
+																											ExprAdd
+																												ExprAdd
+																													ExprMult
+																														ExprPow
+																															ExprUnary
+																																ExprCast
+																																	ExprFac
+																																		Value
+																																			('id', 'aux')
+																												('plus', '+')
+																												ExprMult
+																													ExprPow
+																														ExprUnary
+																															ExprCast
+																																ExprFac
+																																	Value
+																																		('id', 'b')
+																Lines
+																	Line
+																		Statement
+																			If
+																				('ifSel', 'if')
+																				('opParen', '(')
+																				Expr
+																					ExprAnd
+																						ExprBor
+																							ExprBxor
+																								ExprBand
+																									ExprEq
+																										ExprRel
+																											ExprRel
+																												ExprShift
+																													ExprAdd
+																														ExprMult
+																															ExprPow
+																																ExprUnary
+																																	ExprCast
+																																		ExprFac
+																																			Value
+																																				('id', 'a')
+																											('relational', '<=')
+																											ExprShift
+																												ExprAdd
+																													ExprMult
+																														ExprPow
+																															ExprUnary
+																																ExprCast
+																																	ExprFac
+																																		Value
+																																			('id', 'limit')
+																				('clParen', ')')
+																				IfBody
+																					Body
+																						('opBraces', '{')
+																						Lines
+																							Line
+																								Statement
+																									FuncCall
+																										('id', 'textOut')
+																										('opParen', '(')
+																										ParamList
+																											Expr
+																												ExprAnd
+																													ExprBor
+																														ExprBxor
+																															ExprBand
+																																ExprEq
+																																	ExprRel
+																																		ExprShift
+																																			ExprAdd
+																																				ExprMult
+																																					ExprPow
+																																						ExprUnary
+																																							ExprCast
+																																								ExprFac
+																																									Value
+																																										FuncCall
+																																											('id', 'format')
+																																											('opParen', '(')
+																																											ParamList
+																																												Expr
+																																													ExprAnd
+																																														ExprBor
+																																															ExprBxor
+																																																ExprBand
+																																																	ExprEq
+																																																		ExprRel
+																																																			ExprShift
+																																																				ExprAdd
+																																																					ExprMult
+																																																						ExprPow
+																																																							ExprUnary
+																																																								ExprCast
+																																																									ExprFac
+																																																										Value
+																																																											Literal
+																																																												('string', ', %int')
+																																												('comma', ',')
+																																												ParamList
+																																													Expr
+																																														ExprAnd
+																																															ExprBor
+																																																ExprBxor
+																																																	ExprBand
+																																																		ExprEq
+																																																			ExprRel
+																																																				ExprShift
+																																																					ExprAdd
+																																																						ExprMult
+																																																							ExprPow
+																																																								ExprUnary
+																																																									ExprCast
+																																																										ExprFac
+																																																											Value
+																																																												('id', 'a')
+																																											('clParen', ')')
+																										('clParen', ')')
+																						('clBraces', '}')
+													('clBraces', '}')
+			('clBraces', '}')
+	Code
+		EntryPoint
+			('entryPoint', '@isEntryPoint')
+			DeclFunc
+				('function', 'function')
+				('id', 'main')
+				('opParen', '(')
+				('clParen', ')')
+				('isType', 'is')
+				Type
+					('typeInt', 'int')
+				Body
+					('opBraces', '{')
+					Lines
+						Line
+							Statement
+								DeclVars
+									IdsList
+										('id', 'limit')
+									('isType', 'is')
+									Type
+										('typeInt', 'int')
+						Lines
+							Line
+								Statement
+									FuncCall
+										('id', 'in')
+										('opParen', '(')
+										ParamList
+											Expr
+												ExprAnd
+													ExprBor
+														ExprBxor
+															ExprBand
+																ExprEq
+																	ExprRel
+																		ExprShift
+																			ExprAdd
+																				ExprMult
+																					ExprPow
+																						ExprUnary
+																							ExprCast
+																								ExprFac
+																									Value
+																										Literal
+																											('string', '%int')
+											('comma', ',')
+											ParamList
+												Expr
+													ExprAnd
+														ExprBor
+															ExprBxor
+																ExprBand
+																	ExprEq
+																		ExprRel
+																			ExprShift
+																				ExprAdd
+																					ExprMult
+																						ExprPow
+																							ExprUnary
+																								ExprCast
+																									ExprFac
+																										Value
+																											('id', 'limit')
+										('clParen', ')')
+							Lines
+								Line
+									Statement
+										FuncCall
+											('id', 'fibonacci')
+											('opParen', '(')
+											ParamList
+												Expr
+													ExprAnd
+														ExprBor
+															ExprBxor
+																ExprBand
+																	ExprEq
+																		ExprRel
+																			ExprShift
+																				ExprAdd
+																					ExprMult
+																						ExprPow
+																							ExprUnary
+																								ExprCast
+																									ExprFac
+																										Value
+																											('id', 'limit')
+											('clParen', ')')
+								Lines
+									('returnFun', 'return')
+									Expr
+										ExprAnd
+											ExprBor
+												ExprBxor
+													ExprBand
+														ExprEq
+															ExprRel
+																ExprShift
+																	ExprAdd
+																		ExprMult
+																			ExprPow
+																				ExprUnary
+																					ExprCast
+																						ExprFac
+																							Value
+																								Literal
+																									('int', '0')
+					('clBraces', '}')
+
+
+Verdict: Accepted
