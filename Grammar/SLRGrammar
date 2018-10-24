@@ -17,7 +17,8 @@ Literal = 'bool' | 'int' | 'real' | 'char' | 'string'
 Value = Literal | FuncCall | Array | 'id'
 
 Type = 'typeBool' | 'typeInt' | 'typeReal' | 'typeChar' | 'typeString' | TypeArray
-TypeArray = 'typeArray' 'opBrackets' 'clBrackets' 'of' Type | 'typeArray' 'opBrackets' Expr 'clBrackets' 'of' Type
+TypeArray = 'typeArray' 'opBrackets' 'clBrackets' 'of' Type
+TypeArray = 'typeArray' 'opBrackets' Expr 'clBrackets' 'of' Type
 Array = 'id' ArrayPos
 ArrayPos = 'opBrackets' Expr 'clBrackets' ArrayPos | 'opBrackets' Expr 'clBrackets'
 
@@ -30,9 +31,9 @@ Statement = DeclVars | FuncCall | If | Loop | Attrib
 Attrib = LeftAttrib 'attrib' Expr
 LeftAttrib = 'id' | Array
 
-If = 'ifSel' 'opParen' Expr 'clParen' Body | 'ifSel' 'opParen' Expr 'clParen' Body ElIfAux
-ElIfAux = 'elseSel' Body | 'elseSel' If | 'elifSel' 'opParen' Expr 'clParen' ElIf
-ElIf = Body ElIfAux | Body
+If = 'ifSel' 'opParen' Expr 'clParen' IfBody
+IfBody = Body ElIf | Body
+ElIf = 'elseSel' Body | 'elseSel' If | 'elifSel' 'opParen' Expr 'clParen' IfBody
 
 Expr = Expr 'logicOr' ExprAnd | ExprAnd
 ExprAnd = ExprAnd 'logicAnd' ExprBor | ExprBor
@@ -50,4 +51,7 @@ ExprCast = ExprFac 'asCast' Type | ExprFac
 ExprFac = Value | 'opParen' Expr 'clParen'
 
 FuncCall = 'id' 'opParen' ParamList 'clParen' | 'id' 'opParen' 'clParen'
-Loop = 'repeat' 'whileLoop' 'opParen' Expr 'clParen' Body | 'repeat' Body 'whileLoop' 'opParen' Expr 'clParen' | 'repeat' 'opParen' 'id' 'attrib' Expr 'to' Expr 'clParen' Body
+Loop = 'repeat' 'whileLoop' 'opParen' Expr 'clParen' Body
+Loop = 'repeat' Body 'whileLoop' 'opParen' Expr 'clParen'
+Loop = 'repeat' 'opParen' 'id' 'attrib' Expr 'to' Expr 'clParen' Body
+Loop = 'repeat' 'opParen' 'id' 'attrib' Expr 'to' Expr 'at' Expr 'clParen' Body

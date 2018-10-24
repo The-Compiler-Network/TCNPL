@@ -12,10 +12,9 @@ class LexicalAnalyzer:
                   '!': TokenCategory.unary, '~': TokenCategory.unary, '-': TokenCategory.minus, "**": TokenCategory.exp,
                   "*/": TokenCategory.exp, '*': TokenCategory.mult, '/': TokenCategory.mult, '%': TokenCategory.mult,
                   '+': TokenCategory.plus, "<<": TokenCategory.bitShift, ">>": TokenCategory.bitShift,
-                  "<>": TokenCategory.unknown,
-                  "><": TokenCategory.unknown,
-                  '<': TokenCategory.relational, '>': TokenCategory.relational, "<=": TokenCategory.relational,
-                  ">=": TokenCategory.relational, "==": TokenCategory.eqOrDiff, "!=": TokenCategory.eqOrDiff, '^': TokenCategory.bitXor,
+                  "<>": TokenCategory.unknown, "><": TokenCategory.unknown, '<': TokenCategory.relational,
+                  '>': TokenCategory.relational, "<=": TokenCategory.relational, ">=": TokenCategory.relational,
+                  "==": TokenCategory.eqOrDiff, "!=": TokenCategory.eqOrDiff, '^': TokenCategory.bitXor,
                   '&': TokenCategory.bitAnd, '|': TokenCategory.bitOr, "&&": TokenCategory.logicAnd,
                   "||": TokenCategory.logicOr, "&|": TokenCategory.unknown, "|&": TokenCategory.unknown,
                   '=': TokenCategory.attrib, ',': TokenCategory.comma, '"': None, ' ': None, '\t': None}
@@ -26,7 +25,7 @@ class LexicalAnalyzer:
                          "char": TokenCategory.typeChar, "string": TokenCategory.typeString,
                          "array": TokenCategory.typeArray, "to": TokenCategory.to, "as": TokenCategory.asCast,
                          "is": TokenCategory.isType, "while": TokenCategory.whileLoop, "if": TokenCategory.ifSel,
-                         "elif": TokenCategory.elifSel, "else": TokenCategory.elseSel,
+                         "elif": TokenCategory.elifSel, "else": TokenCategory.elseSel, "at": TokenCategory.at,
                          "function": TokenCategory.function, "of": TokenCategory.of, "repeat": TokenCategory.repeat,
                          "return": TokenCategory.returnFun, "@isEntryPoint": TokenCategory.entryPoint}
     file = None
