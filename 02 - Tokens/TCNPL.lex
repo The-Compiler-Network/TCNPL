@@ -16,8 +16,7 @@ of "of"
 /* Literals */
 bool "true"|"false"
 int [[:digit:]]+
-real [[:digit:]]+"."[[:digit:]]*
-scynot {real}e{int}
+real [[:digit:]]+"."[[:digit:]]*("e"[[:digit:]]*)?
 char "'"(\\.|[^"\\])?"'"
 string \"(\\.|[^"\\])*\"
 

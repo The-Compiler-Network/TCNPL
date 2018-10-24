@@ -2,12 +2,12 @@ from enum import Enum
 
 class TokenCategory(Enum):
   id, typeBool, typeInt, typeReal, typeChar, typeString, \
-  typeArray, asCast, isType, of, bool, int, real, scynot, char, \
+  typeArray, asCast, isType, of, bool, int, real, char, \
   string, repeat, whileLoop, to, at, ifSel, \
   elifSel, elseSel, opParen, clParen, function, returnFun, \
   entryPoint, opBraces, clBraces, opBrackets, clBrackets, \
-  unary,  exp, mult, additive, bitShift, relational, eqOrDiff,\
-  bitAnd, bitOr, logicAnd, logicOr, attrib, comma = list(range(45))
+  unary,  exp, mult, plus, minus, bitShift, relational, eqOrDiff, \
+  bitXor, bitAnd, bitOr, logicAnd, logicOr, attrib, comma, unknown = list(range(47))
 # id = [[:alpha:]](_|[[:alnum:]])*
 # typeBool = "bool"
 # typeInt = "int"
@@ -20,8 +20,8 @@ class TokenCategory(Enum):
 # of = "of"
 # bool = "true"|"false"
 # int = [[:digit:]]+
-# real = [[:digit:]]+"."[[:digit:]]*
-# scynot = {real}e{int}
+# real = [[:digit:]]+"."[[:digit:]]*(e{int})?
+# scinot = {real}e{int} DISABLED
 # char = "'"(\\.|[^"\\])?"'"
 # string = \"(\\.|[^"\\])*\"
 # repeat = "repeat"
