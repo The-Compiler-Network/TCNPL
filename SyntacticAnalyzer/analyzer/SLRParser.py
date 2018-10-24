@@ -271,10 +271,11 @@ class SLRParser:
         return('\'' + self.token.category.name + '\'' if self.token else "EOF")
 
     def next_token(self):
+        if (ALCINO):
+            if self.token is not None: print(self.token)
         prev = (self.token.category.name, self.token.value) if self.token else None
         self.token = self.lexicalAnalyzer.next_token()
         if self.token is not None: self.tokens += [self.token]
-        if (ALCINO): print(self.token if self.token is not None else " "*8+"EOF")
         return(prev)
 
     def parse(self):
